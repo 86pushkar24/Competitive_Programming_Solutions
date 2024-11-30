@@ -1,0 +1,57 @@
+// @prefix cpp
+// @description
+
+#include <stdcpp.h>
+// #include<bits/stdc++.h>
+
+using namespace std;
+
+#define endl '\n'
+#define int long long
+#define all(v) v.begin(), v.end()
+
+const int MOD = 1e9 + 7;
+const int INF = LLONG_MAX >> 1;
+
+void push()
+{
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    int cnt = 0;
+    for (char c : s)
+    {
+        if (c == '1')
+            cnt++;
+    }
+    if (cnt > k)
+    {
+        for (int i = 0; i < n && k > 0; ++i)
+        {
+            if (s[i] == '1')
+            {
+                s[i] = '0';
+                k--;
+            }
+        }
+        cout << s << endl;
+    }
+    else
+    {
+        cout << string(n - k, '0') << endl;
+    }
+}
+
+signed main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int tc = 1;
+    cin >> tc;
+    while (tc--)
+    {
+        push();
+    }
+}

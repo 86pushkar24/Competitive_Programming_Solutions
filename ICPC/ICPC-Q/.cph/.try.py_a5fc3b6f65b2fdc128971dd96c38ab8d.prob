@@ -1,0 +1,1 @@
+{"name":"Local: try","url":"/Users/user/Desktop/ICPC/try.py","tests":[{"id":1731772009747,"input":"4\n2 4 8 32","output":"0\n1\n1\n3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/user/Desktop/ICPC/try.py","group":"local","local":true}
