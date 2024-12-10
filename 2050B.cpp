@@ -4,7 +4,7 @@
 using namespace std;
 
 // Macros
-// #define int long long
+#define int long long
 #define endl '\n'
 #define for0(i,n)for(int i=0;i<n;++i)
 #define for1(i,n)for(int i=1;i<=n;++i)
@@ -64,74 +64,30 @@ const int maxn = 4e5 + 5;
 const int inf = 1e18;
 const int mod = 1e9 + 7;
 
-// Utility Functions
-int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
-int lcm(int a, int b) { return (a * b) / gcd(a, b); }
-int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
-int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
-bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
-static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
+// Utility Functions (Commented for Optional Use)
+// int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
+// int lcm(int a, int b) { return (a * b) / gcd(a, b); }
+// int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
+// int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
+// bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
+// static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push()
-{
+void push(){
     int n;
-    ci n;
-    vvi g(n); 
-    for0(i, n - 1)
+    cin >> n;
+    int s1 = 0, s2 = 0, n1 = 0, n2 = 0;
+    for (int i = 0; i < n; i++)
     {
-        int a, b;
-        ci a >> b;
-        a--, b--;
-        g[a].pb(b);
-        g[b].pb(a);
+        int v;
+        cin >> v;
+        if (i % 2 == 0)
+            s1 += v, n1++;
+        else
+            s2 += v, n2++;
     }
-
-    vi mx1(n), mx2(n), ans(n), vis(n, 1), p(n, -1);
-    auto dfs = [&](auto &self, int a) -> void
-    {
-        vis[a] = 0;
-        for (int x : g[a])
-        {
-            if (vis[x])self(self, x);
-            else p[x] = a;
-        }
-
-        int id = 0;
-        for (int x : g[a])
-        {
-            if (a != p[x])
-            {
-                if (mx1[x] + g[x].size() - 1 > mx1[a])
-                {
-                    mx1[a] = mx1[x] + max(0, (int)g[x].size() - 2);
-                    id = x;
-                }
-                if (g[x].size() - 1 > mx1[a])
-                {
-                    mx1[a] = g[x].size() - 1;
-                    id = x;
-                }
-            }
-        }
-
-        for (int x : g[a])
-        {
-            if (a != p[x] && x != id)
-            {
-                mx2[a] = max(mx2[a], mx1[x] + max(0, (int)g[x].size() - 2));
-                mx2[a] = max(mx2[a], (int)g[x].size() - 1);
-            }
-        }
-
-        ans[a] = max(ans[a], (int)g[a].size());
-        ans[a] = max(ans[a], mx1[a] + (int)g[a].size() - 1);
-        ans[a] = max(ans[a], mx2[a] + (int)g[a].size() - 1);
-        ans[a] = max(ans[a], mx1[a] + mx2[a] + (int)g[a].size() - 2);
-    };
-
-    dfs(dfs, 0);
-    cou(mxe(ans));
+    if (s1 % n1 == 0 && s2 % n2 == 0 && s1 / n1 == s2 / n2)yes
+    else no
 }
 
 signed main() {

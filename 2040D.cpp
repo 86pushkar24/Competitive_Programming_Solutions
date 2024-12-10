@@ -4,7 +4,7 @@
 using namespace std;
 
 // Macros
-// #define int long long
+#define int long long
 #define endl '\n'
 #define for0(i,n)for(int i=0;i<n;++i)
 #define for1(i,n)for(int i=1;i<=n;++i)
@@ -44,7 +44,6 @@ using namespace std;
 #define co(a) {cout<<a<<' ';}
 #define cou(a) {cout<<a<<"\n";}
 #define ci cin >>
-#define sz(c) c.size()
 
 // Vector Operations
 #define sortv(v) sort(aint(v))
@@ -64,74 +63,115 @@ const int maxn = 4e5 + 5;
 const int inf = 1e18;
 const int mod = 1e9 + 7;
 
-// Utility Functions
-int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
-int lcm(int a, int b) { return (a * b) / gcd(a, b); }
-int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
-int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
-bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
-static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
+// Utility Functions (Commented for Optional Use)
+// int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
+// int lcm(int a, int b) { return (a * b) / gcd(a, b); }
+// int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
+// int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
+// bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
+// static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
 void push()
 {
-    int n;
-    ci n;
-    vvi g(n); 
-    for0(i, n - 1)
+    int n;ci n;
+    vvi g(n);
+    for1(i, n - 1)
     {
         int a, b;
         ci a >> b;
-        a--, b--;
-        g[a].pb(b);
-        g[b].pb(a);
+        g[a - 1].pb(b - 1);
+        g[b - 1].pb(a - 1);
     }
 
-    vi mx1(n), mx2(n), ans(n), vis(n, 1), p(n, -1);
+    vi vis(n, 0), sz(n, 1), p(n, -1);
+    vi u;
+    vi ans(n);
+    bool ok = 0;
+    int sp = 0;
+
+    auto dfs1 = [&](auto &self, int a, int b) -> void
+    {
+        ans[a] = b;
+        for (auto x : g[a])
+        {
+            if (x != p[a])self(self, x, b);
+        }
+    };
+
     auto dfs = [&](auto &self, int a) -> void
     {
-        vis[a] = 0;
-        for (int x : g[a])
-        {
-            if (vis[x])self(self, x);
-            else p[x] = a;
-        }
+        vis[a] = 1;
+        vector<pii> temp;
 
-        int id = 0;
-        for (int x : g[a])
+        for (auto x : g[a])
         {
-            if (a != p[x])
+            if (vis[x] == 0)
             {
-                if (mx1[x] + g[x].size() - 1 > mx1[a])
-                {
-                    mx1[a] = mx1[x] + max(0, (int)g[x].size() - 2);
-                    id = x;
-                }
-                if (g[x].size() - 1 > mx1[a])
-                {
-                    mx1[a] = g[x].size() - 1;
-                    id = x;
-                }
+                p[x] = a;
+                self(self, x);
+                sz[a] += sz[x];
+                temp.pb({sz[x], x});
             }
         }
 
-        for (int x : g[a])
+        if (sz[a] >= n / 2 && !ok)
         {
-            if (a != p[x] && x != id)
-            {
-                mx2[a] = max(mx2[a], mx1[x] + max(0, (int)g[x].size() - 2));
-                mx2[a] = max(mx2[a], (int)g[x].size() - 1);
-            }
-        }
+            ok = 1;
+            int c = 1;
+            sp = a;
+            ans[a] = 1;
 
-        ans[a] = max(ans[a], (int)g[a].size());
-        ans[a] = max(ans[a], mx1[a] + (int)g[a].size() - 1);
-        ans[a] = max(ans[a], mx2[a] + (int)g[a].size() - 1);
-        ans[a] = max(ans[a], mx1[a] + mx2[a] + (int)g[a].size() - 2);
+            while (!temp.empty() && c + temp.back().fi <= n / 2)
+            {
+                c += temp.back().fi;
+                dfs1(dfs1, temp.back().se, 1);
+                temp.pop_back();
+            }
+
+            while (!temp.empty())
+            {
+                dfs1(dfs1, temp.back().se, 3);
+                temp.pop_back();
+            }
+
+            sz[a] = 0;
+        }
     };
 
     dfs(dfs, 0);
-    cou(mxe(ans));
+
+    auto dfs2 = [&](auto &self, int a) -> void
+    {
+        if (a == sp)
+            return;
+        ans[a] = 2;
+
+        for (auto x : g[a])
+        {
+            if (x != p[a])
+            {
+                self(self, x);
+            }
+        }
+    };
+
+    dfs2(dfs2, 0);
+
+    int a[] = {0, 5, 6, 7};
+    vi fans(n);
+
+    for0(i, n){
+        if (i == sp)fans[i] = 1;
+        else if (i == p[sp])fans[i] = 2;
+        else{
+            fans[i] = a[ans[i]];
+            a[ans[i]] += 4;
+        }
+    }
+
+    for (auto x : fans) co(x);
+    cout << endl;
 }
 
 signed main() {

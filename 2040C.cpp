@@ -4,7 +4,7 @@
 using namespace std;
 
 // Macros
-// #define int long long
+#define int long long
 #define endl '\n'
 #define for0(i,n)for(int i=0;i<n;++i)
 #define for1(i,n)for(int i=1;i<=n;++i)
@@ -49,7 +49,7 @@ using namespace std;
 // Vector Operations
 #define sortv(v) sort(aint(v))
 #define rev(v) reverse(aint(v))
-#define sumv(arr) accumulate(aint(arr), 0LL)
+#define sumv(v) accumulate(aint(v), 0LL)
 #define Ceil(a, b) ((a + b - 1) / b)
 #define ai(o) vi a(n);for0(i,n)ci a[i];
 
@@ -64,74 +64,34 @@ const int maxn = 4e5 + 5;
 const int inf = 1e18;
 const int mod = 1e9 + 7;
 
-// Utility Functions
-int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
-int lcm(int a, int b) { return (a * b) / gcd(a, b); }
-int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
-int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
-bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
-static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
+// Utility Functions (Commented for Optional Use)
+// int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
+// int lcm(int a, int b) { return (a * b) / gcd(a, b); }
+// int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
+// int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
+// bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
+// static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push()
-{
-    int n;
-    ci n;
-    vvi g(n); 
-    for0(i, n - 1)
-    {
-        int a, b;
-        ci a >> b;
-        a--, b--;
-        g[a].pb(b);
-        g[b].pb(a);
+vi v(maxn,1);
+void fn(int n, int k, int ans){
+    if(n==0)return;
+    if(k<=v[n-1]){
+        co(ans)
+        fn(n-1,k,ans+1);
     }
-
-    vi mx1(n), mx2(n), ans(n), vis(n, 1), p(n, -1);
-    auto dfs = [&](auto &self, int a) -> void
-    {
-        vis[a] = 0;
-        for (int x : g[a])
-        {
-            if (vis[x])self(self, x);
-            else p[x] = a;
-        }
-
-        int id = 0;
-        for (int x : g[a])
-        {
-            if (a != p[x])
-            {
-                if (mx1[x] + g[x].size() - 1 > mx1[a])
-                {
-                    mx1[a] = mx1[x] + max(0, (int)g[x].size() - 2);
-                    id = x;
-                }
-                if (g[x].size() - 1 > mx1[a])
-                {
-                    mx1[a] = g[x].size() - 1;
-                    id = x;
-                }
-            }
-        }
-
-        for (int x : g[a])
-        {
-            if (a != p[x] && x != id)
-            {
-                mx2[a] = max(mx2[a], mx1[x] + max(0, (int)g[x].size() - 2));
-                mx2[a] = max(mx2[a], (int)g[x].size() - 1);
-            }
-        }
-
-        ans[a] = max(ans[a], (int)g[a].size());
-        ans[a] = max(ans[a], mx1[a] + (int)g[a].size() - 1);
-        ans[a] = max(ans[a], mx2[a] + (int)g[a].size() - 1);
-        ans[a] = max(ans[a], mx1[a] + mx2[a] + (int)g[a].size() - 2);
-    };
-
-    dfs(dfs, 0);
-    cou(mxe(ans));
+    else{
+        fn(n-1,k-v[n-1],ans+1);
+        co(ans)
+    }
+}
+void push(){
+    int n,k;ci n>>k;
+    if(k>v[n])cou(-1)
+    else{
+        fn(n,k,1);
+        cout<<endl;
+    }
 }
 
 signed main() {
@@ -143,7 +103,10 @@ signed main() {
 
     int tc = 1;
     cin >> tc;
-
+    fl(2,maxn){
+        v[i]=v[i-1]<<1;
+        v[i]=min(v[i],inf);
+    }
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         push();
