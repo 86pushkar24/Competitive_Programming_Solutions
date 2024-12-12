@@ -67,38 +67,30 @@ const int mod = 1e9 + 7;
 // Utility Functions (Commented for Optional Use)
 // int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
 // int lcm(int a, int b) { return (a * b) / gcd(a, b); }
-int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
+// int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
 // int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
 // bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
 void push() {
-    int n, k, a = 0, b = 0;
-    ci n >> k;
-    vi v(n);
-    for0(i, n) {
-        ci v[i];
-        a += (v[i] == 0);
-        b += v[i];
+    int n;ci n;
+    vector<array<int, 3>> a(n, {0, 0, 0});
+    vpii b(n);
+    for0(i,n){
+        ci a[i][0];
+        a[i][2]=i;
+        a[i][1]+=(a[i][0]-(a[i][0]>>2));
+        a[i][0]=(a[i][0]>>2);
+        b[i].fi=a[i][0];
+        b[i].se=i;
     }
-    vi v1(n + 1, 1), v2(n + 1, 1);
-    for1(i, n) {
-        v1[i] = i * v1[i - 1] % mod;
-        v2[i] = binpow(v1[i], mod - 2, mod);
-    }
-
-    vi u(b + 1);
-    for0(i, a + 1) {
-        if (b < k - i || k - i <= i) continue;
-        u[k - i] = v1[a] * v2[a - i] % mod * v2[i] % mod;
-    }
-
-    int ans = 0;
-    for0(i, b + 1) {
-        ans = (ans + v1[b] * v2[b - i] % mod * v2[i] % mod * u[i] % mod) % mod;
-    }
-    cou(ans);
+    sortv(a);
+    sortv(b);
+    vi c(n);
+    for0(i,n)c[b[i].se] = a[i][0] + a[i][1];
+    for0(i,n)co(c[i]);
+    cout << endl;
 }
 
 
