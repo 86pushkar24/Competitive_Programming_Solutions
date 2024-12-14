@@ -4,23 +4,27 @@
 using namespace std;
 
 // Macros
-// #define int long long
+#define int long long
 #define endl '\n'
-#define for0(i,n)for(int i=0;i<n;++i)
-#define for1(i,n)for(int i=1;i<=n;++i)
-#define fl(a,b)for(int i=a;i<(b);++i)
-#define rfl(a,b)for(int i=a;i>=(b);--i)
+#define for0(i, n) for (int i = 0; i < n; ++i)
+#define for1(i, n) for (int i = 1; i <= n; ++i)
+#define fl(a, b) for (int i = a; i < (b); ++i)
+#define rfl(a, b) for (int i = a; i >= (b); --i)
 
-#define lbound(v, x) lower_bound(v.begin(),v.end(),x)-v.begin()
-#define ubound(v, x) upper_bound(v.begin(),v.end(),x)-v.begin()
-#define mne(v) *min_element(v.begin(),v.end())
-#define mxe(v) *max_element(v.begin(),v.end())
+#define lbound(v, x) lower_bound(v.begin(), v.end(), x) - v.begin()
+#define ubound(v, x) upper_bound(v.begin(), v.end(), x) - v.begin()
+#define mne(v) *min_element(v.begin(), v.end())
+#define mxe(v) *max_element(v.begin(), v.end())
 
-#define yes cout<<"YES"<<endl;
+#define yes cout << "YES" << endl;
 #define no cout << "NO" << endl;
-#define cy(x){if(x)yes else no}
+#define cy(x)           \
+    {                   \
+        if (x)          \
+            yes else no \
+    }
 
-#define aint(v) v.begin(),v.end()
+#define aint(v) v.begin(), v.end()
 #define vi vector<int>
 #define vb vector<bool>
 #define vc vector<char>
@@ -40,9 +44,19 @@ using namespace std;
 #define se second
 
 // Input/Output Macros
-#define cin(a) int n;cin>>n;vi a(n);for0(i,n){cin>>a[i];}
-#define co(a) {cout<<a<<' ';}
-#define cou(a) {cout<<a<<"\n";}
+#define cin(a) \
+    int n;     \
+    cin >> n;  \
+    vi a(n);   \
+    for0(i, n) { cin >> a[i]; }
+#define co(a)             \
+    {                     \
+        cout << a << ' '; \
+    }
+#define cou(a)             \
+    {                      \
+        cout << a << "\n"; \
+    }
 #define ci cin >>
 #define sz(c) c.size()
 
@@ -51,7 +65,9 @@ using namespace std;
 #define rev(v) reverse(aint(v))
 #define sumv(arr) accumulate(aint(arr), 0LL)
 #define Ceil(a, b) ((a + b - 1) / b)
-#define ai(o) vi a(n);for0(i,n)ci a[i];
+#define ai(o) \
+    vi a(n);  \
+    for0(i, n) ci a[i];
 
 // Type Aliases for Nested Containers
 using vvb = vector<vector<bool>>;
@@ -73,67 +89,62 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push() {
-    int n, a;
-    ci n;
-    string g[n], w[n];
-    int p1[n], p2[n];
-    map<string, vi> m1, m2;
+void push()
+{
+    int n, m;
+    ci n >> m;
+    vvp v(n);
+    int a, b, c;
 
-    for0(i, n) {
-        ci g[i] >> w[i];
+    for0(i, m)
+    {
+        ci a >> b >> c;
+        a--;
+        b--;
+        v[a].pb({b, c});
+        v[b].pb({a, c});
     }
 
-    for0(i, n) {
-        m1[g[i]].pb(i);
-        m2[w[i]].pb(i);
-    }
+    vi s(n);
+    for0(i, n)ci s[i];
+    vvi d(n, vector<int>(1001, inf));
+    vvb vist(n, vector<bool>(1001, false));
+    set<array<int, 3>> t;
 
-    a = 0;
-    for (auto x : m1) {
-        for (auto y : x.se) {
-            p1[y] = a;
-        }
-        a++;
-    }
+    t.insert({0, 0, s[0]});
+    d[0][s[0]] = 0;
 
-    a = 0;
-    for (auto x : m2) {
-        for (auto y : x.se) {
-            p2[y] = a;
-        }
-        a++;
-    }
+    while (!t.empty())
+    {
+        a = (*t.begin())[1];
+        b = (*t.begin())[2];
+        t.erase(t.begin());
 
-    vvi u((1 << n), vi(n, 0));
-    for0(i, n) {
-        u[(1 << i)][i] = 1;
-    }
+        if (d[a][b] == M)
+            continue;
 
-    for0(i, (1 << n)) {
-        for0(j, n) {
-            if (u[i][j] == 0) continue;
-            for0(l, n) {
-                if ((i >> l) & 1) continue;
-                if (p1[l] == p1[j] || p2[l] == p2[j]) {
-                    u[i | (1 << l)][l] = 1;
-                }
-            }
-        }
-    }
-    int mx = 0;
-    for0(i, (1 << n)) {
-        for0(j, n) {
-            if (u[i][j]) {
-                mx = max(mx, __builtin_popcount(i));
+        for (auto x : v[a])
+        {
+            c = min(s[x.fi], b);
+            if (d[x.fi][c] > d[a][b] + (int)x.se * b)
+            {
+                d[x.fi][c] = d[a][b] + (int)x.se * b;
+                t.insert({d[x.fi][c], x.fi, c});
             }
         }
     }
 
-    cou(n - mx);
+    int ans = inf;
+    for0(i, 1001)
+    {
+        ans = min(ans, d[n - 1][i]);
+    }
+
+    cou(ans);
 }
 
-signed main() {
+signed main()
+{
     cin.tie(0);
     cout.tie(0);
     ios::sync_with_stdio(0);
@@ -143,7 +154,8 @@ signed main() {
     int tc = 1;
     cin >> tc;
 
-    for (int t = 1; t <= tc; t++) {
+    for (int t = 1; t <= tc; t++)
+    {
         // cout << "Case #" << t << ": ";
         push();
     }

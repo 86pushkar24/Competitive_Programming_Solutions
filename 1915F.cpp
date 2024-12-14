@@ -4,7 +4,7 @@
 using namespace std;
 
 // Macros
-// #define int long long
+#define int long long
 #define endl '\n'
 #define for0(i,n)for(int i=0;i<n;++i)
 #define for1(i,n)for(int i=1;i<=n;++i)
@@ -73,64 +73,33 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push() {
-    int n, a;
+void push()
+{
+    int n;
     ci n;
-    string g[n], w[n];
-    int p1[n], p2[n];
-    map<string, vi> m1, m2;
 
-    for0(i, n) {
-        ci g[i] >> w[i];
+    int a, b, count = 0;
+    vpii v(n);
+    vi u;
+
+    for0(i, n)
+    {
+        ci a >> b;
+        v[i] = {a, b};
+        u.pb(b);
     }
 
-    for0(i, n) {
-        m1[g[i]].pb(i);
-        m2[w[i]].pb(i);
+    sortv(v);
+    sortv(u);
+
+    for0(i, n)
+    {
+        int j = lbound(u, v[i].se);
+        count += j;
+        u.erase(u.begin() + j);
     }
 
-    a = 0;
-    for (auto x : m1) {
-        for (auto y : x.se) {
-            p1[y] = a;
-        }
-        a++;
-    }
-
-    a = 0;
-    for (auto x : m2) {
-        for (auto y : x.se) {
-            p2[y] = a;
-        }
-        a++;
-    }
-
-    vvi u((1 << n), vi(n, 0));
-    for0(i, n) {
-        u[(1 << i)][i] = 1;
-    }
-
-    for0(i, (1 << n)) {
-        for0(j, n) {
-            if (u[i][j] == 0) continue;
-            for0(l, n) {
-                if ((i >> l) & 1) continue;
-                if (p1[l] == p1[j] || p2[l] == p2[j]) {
-                    u[i | (1 << l)][l] = 1;
-                }
-            }
-        }
-    }
-    int mx = 0;
-    for0(i, (1 << n)) {
-        for0(j, n) {
-            if (u[i][j]) {
-                mx = max(mx, __builtin_popcount(i));
-            }
-        }
-    }
-
-    cou(n - mx);
+    cou(count);
 }
 
 signed main() {
