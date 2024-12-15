@@ -78,28 +78,19 @@ void push() {
     ci n;
     vi s(n);
     int a;
-
-    for0(i, n) {
+    for0(i, n){
         ci a;
-        if (i % 2 == 0) {
-            s[i] = a;
-        } else {
-            s[i] = -a;
-        }
-        if (i > 0) {
-            s[i] += s[i - 1];
-        }
+        if (i % 2 == 0)s[i] = a;
+        else s[i] = -a;
+        if (i > 0)s[i] += s[i - 1];
     }
-
     sortv(s);
-
-    for0(i, n - 1) {
-        if (s[i] == 0 || s[i] == s[i + 1]) {
+    for0(i, n - 1){
+        if (s[i] == 0 || s[i] == s[i + 1]){
             cou("YES");
             return;
         }
     }
-
     cou("NO");
 }
 
