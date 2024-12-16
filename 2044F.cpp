@@ -2,9 +2,6 @@
 
 #include "bits/stdc++.h"
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
 
 // Macros
 #define int long long
@@ -76,52 +73,49 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-// void push()
-// {
-//     int n;
-//     ci n;
-
-//     int a, b, count = 0;
-//     vpii v(n);
-//     vi u;
-
-//     for0(i, n)
-//     {
-//         ci a >> b;
-//         v[i] = {a, b};
-//         u.pb(b);
-//     }
-
-//     sortv(v);
-//     sortv(u);
-
-//     for0(i, n)
-//     {
-//         int j = lbound(u, v[i].se);
-//         count += j;
-//         u.erase(u.begin() + j);
-//     }
-
-//     cou(count);
-// }
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
-void push() {
-    int n;ci n;
-    int ans = 0;
-    vpii v;
-    ordered_set os;
-    while (n--) {
-        int a, b;
-        ci a >> b;
-        v.pb({a, b});
-        os.insert(b);
+vi divisors(int x) {
+    vi d;
+    int y=abs(x);
+    for (int i(1);i*i<=y;i++){
+        if(y%i==0) {
+            d.pb(i);
+            if(i*i!=y)d.pb(y/i);
+        }
     }
-    sortv(v);
-    for0(i,sz(v)) {
-        ans += os.order_of_key(v[i].se);
-        os.erase(v[i].se);
+    return d;
+}
+
+void push(){
+    int n,m,q;ci n>>m>>q;
+    vi v1(n),v2(m);
+    int x(0),y(0);
+    for0(i,n)ci v1[i],x+=v1[i];
+    for0(j,m)ci v2[j],y+=v2[j];
+    unordered_set<int> s1,s2;
+    s1.reserve(n*2);
+    s2.reserve(m*2);
+    for0(i,n)s1.insert(x-v1[i]);
+    for0(j,m)s2.insert(y-v2[j]);
+    unordered_map<int,string> mpp;
+    mpp.reserve(q*2);
+    while(q--){
+        int z;ci z;
+        if(mpp.find(z)!=mpp.nd){
+            cou(mpp[z]);
+            continue;
+        }
+        bool ok(false);
+        auto d = divisors(z);
+        for(auto &it : d){
+            int rm=z/it;
+            if((s1.find(it)!=s1.nd && s2.find(rm)!=s2.nd)||(s1.find(-it)!=s1.nd && s2.find(-rm)!=s2.nd)){
+                ok=true;
+                break;
+            }
+        }
+        mpp[z] = ok?"YES":"NO";
+        cou(mpp[z]);
     }
-    cou(ans);
 }
 
 signed main() {
@@ -132,8 +126,7 @@ signed main() {
     auto begin = std::chrono::high_resolution_clock::now();
 
     int tc = 1;
-    cin >> tc;
-
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         push();

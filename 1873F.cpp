@@ -2,9 +2,6 @@
 
 #include "bits/stdc++.h"
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
 
 // Macros
 #define int long long
@@ -76,52 +73,30 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-// void push()
-// {
-//     int n;
-//     ci n;
-
-//     int a, b, count = 0;
-//     vpii v(n);
-//     vi u;
-
-//     for0(i, n)
-//     {
-//         ci a >> b;
-//         v[i] = {a, b};
-//         u.pb(b);
-//     }
-
-//     sortv(v);
-//     sortv(u);
-
-//     for0(i, n)
-//     {
-//         int j = lbound(u, v[i].se);
-//         count += j;
-//         u.erase(u.begin() + j);
-//     }
-
-//     cou(count);
-// }
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
-void push() {
-    int n;ci n;
-    int ans = 0;
-    vpii v;
-    ordered_set os;
-    while (n--) {
-        int a, b;
-        ci a >> b;
-        v.pb({a, b});
-        os.insert(b);
+void push(){
+    int n,f,tmp(0),mxx(0),crr(0);
+    ci n>>f;
+    vi v1(n),v2(n);
+    for0(i,n){
+        ci v1[i];
+        if(v1[i]<=f)tmp=1;
     }
-    sortv(v);
-    for0(i,sz(v)) {
-        ans += os.order_of_key(v[i].se);
-        os.erase(v[i].se);
+    for0(i,n)ci v2[i];
+    for(int i(1),j(0);i<n;i++){
+        if(v2[j]%v2[i]==0){
+            crr+=v1[j];
+            while(i<n && v2[i-1]%v2[i]==0){
+                crr+=v1[i];
+                if(crr<=f)mxx=max(i-j+1,mxx);
+                else while(crr>f && j<n)crr-=v1[j++];
+                i++;
+            }
+            j=i;
+            crr=0;
+        }
+        j=i;
     }
-    cou(ans);
+    cou((mxx==0 && tmp?1:mxx));
 }
 
 signed main() {

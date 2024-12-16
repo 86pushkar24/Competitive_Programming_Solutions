@@ -2,9 +2,6 @@
 
 #include "bits/stdc++.h"
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
 
 // Macros
 #define int long long
@@ -76,52 +73,14 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-// void push()
-// {
-//     int n;
-//     ci n;
-
-//     int a, b, count = 0;
-//     vpii v(n);
-//     vi u;
-
-//     for0(i, n)
-//     {
-//         ci a >> b;
-//         v[i] = {a, b};
-//         u.pb(b);
-//     }
-
-//     sortv(v);
-//     sortv(u);
-
-//     for0(i, n)
-//     {
-//         int j = lbound(u, v[i].se);
-//         count += j;
-//         u.erase(u.begin() + j);
-//     }
-
-//     cou(count);
-// }
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
-void push() {
-    int n;ci n;
-    int ans = 0;
-    vpii v;
-    ordered_set os;
-    while (n--) {
-        int a, b;
-        ci a >> b;
-        v.pb({a, b});
-        os.insert(b);
-    }
-    sortv(v);
-    for0(i,sz(v)) {
-        ans += os.order_of_key(v[i].se);
-        os.erase(v[i].se);
-    }
-    cou(ans);
+void push()
+{
+    string alph = "abc";
+    string s;
+    ci s;
+    int cnt = 0;
+    for0(i, 3)cnt += (s[i] != alph[i]);
+    cou((cnt <= 2 ? "YES" : "NO"));
 }
 
 signed main() {
