@@ -6,21 +6,25 @@ using namespace std;
 // Macros
 #define int long long
 #define endl '\n'
-#define for0(i,n)for(int i=0;i<n;++i)
-#define for1(i,n)for(int i=1;i<=n;++i)
-#define fl(a,b)for(int i=a;i<(b);++i)
-#define rfl(a,b)for(int i=a;i>=(b);--i)
+#define for0(i, n) for (int i = 0; i < n; ++i)
+#define for1(i, n) for (int i = 1; i <= n; ++i)
+#define fl(a, b) for (int i = a; i < (b); ++i)
+#define rfl(a, b) for (int i = a; i >= (b); --i)
 
-#define lbound(v, x) lower_bound(v.begin(),v.end(),x)-v.begin()
-#define ubound(v, x) upper_bound(v.begin(),v.end(),x)-v.begin()
-#define mne(v) *min_element(v.begin(),v.end())
-#define mxe(v) *max_element(v.begin(),v.end())
+#define lbound(v, x) lower_bound(v.begin(), v.end(), x) - v.begin()
+#define ubound(v, x) upper_bound(v.begin(), v.end(), x) - v.begin()
+#define mne(v) *min_element(v.begin(), v.end())
+#define mxe(v) *max_element(v.begin(), v.end())
 
-#define yes cout<<"YES"<<endl;
+#define yes cout << "YES" << endl;
 #define no cout << "NO" << endl;
-#define cy(x){if(x)yes else no}
+#define cy(x)           \
+    {                   \
+        if (x)          \
+            yes else no \
+    }
 
-#define aint(v) v.begin(),v.end()
+#define aint(v) v.begin(), v.end()
 #define vi vector<int>
 #define vb vector<bool>
 #define vc vector<char>
@@ -40,9 +44,19 @@ using namespace std;
 #define se second
 
 // Input/Output Macros
-#define cin(a) int n;cin>>n;vi a(n);for0(i,n){cin>>a[i];}
-#define co(a) {cout<<a<<' ';}
-#define cou(a) {cout<<a<<"\n";}
+#define cin(a) \
+    int n;     \
+    cin >> n;  \
+    vi a(n);   \
+    for0(i, n) { cin >> a[i]; }
+#define co(a)             \
+    {                     \
+        cout << a << ' '; \
+    }
+#define cou(a)             \
+    {                      \
+        cout << a << "\n"; \
+    }
 #define ci cin >>
 #define sz(c) c.size()
 
@@ -51,7 +65,9 @@ using namespace std;
 #define rev(v) reverse(aint(v))
 #define sumv(arr) accumulate(aint(arr), 0LL)
 #define Ceil(a, b) ((a + b - 1) / b)
-#define ai(o) vi a(n);for0(i,n)ci a[i];
+#define ai(o) \
+    vi a(n);  \
+    for0(i, n) ci a[i];
 
 // Type Aliases for Nested Containers
 using vvb = vector<vector<bool>>;
@@ -73,23 +89,36 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push(){
-    int n,c;ci n>>c;
+void push()
+{
+    int n, c;
+    ci n >> c;
     vi a(n);
-    for0(i,n)ci a[i];
-    int l(1),r(1e9);
-    while(l<=r){
-        int mid(l+(r-l)/2),ans(0);
-        for0(i,n){
-            ans+=(a[i]+2*mid)*(a[i]+2*mid);
-            if(ans>c)break;
+    for0(i, n) ci a[i];
+    int l(1), r(1e9);
+    while (l <= r)
+    {
+        int md(l + (r - l) / 2), ans(0);
+        for0(i, n)
+        {
+            ans += (a[i] + 2 * md) * (a[i] + 2 * md);
+            if (ans > c)
+                break;
         }
-        if(ans==c){cou(mid);return;}
-        ans>c?r=mid-1:l=mid+1;
+        if (ans == c)
+        {
+            cou(md);
+            return;
+        }
+        if (ans > c)
+            r = md - 1;
+        else
+            l = md + 1;
     }
 }
 
-signed main() {
+signed main()
+{
     cin.tie(0);
     cout.tie(0);
     ios::sync_with_stdio(0);
@@ -99,7 +128,8 @@ signed main() {
     int tc = 1;
     cin >> tc;
 
-    for (int t = 1; t <= tc; t++) {
+    for (int t = 1; t <= tc; t++)
+    {
         // cout << "Case #" << t << ": ";
         push();
     }
