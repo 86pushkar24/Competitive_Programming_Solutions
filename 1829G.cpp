@@ -125,3 +125,35 @@ signed main() {
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     cerr << "Time measured: " << elapsed.count() * 1e-9 << " seconds." << endl;
 }
+// void push(){
+//     int N(1000001),a[N];
+//     for0(i,N)a[i]=i*i;
+//     for(int i(2);i<N;i++)a[i]+=a[i-1];
+//     vi v1,v2;
+//     int x(1),y(1),j(1);
+//     while(x<=N)v1.pb(x),v2.pb(y),x+=j,y+=j+1,j++;
+//     while(t--){
+//         int n,check(0),val1(n),val2(n),ans(0);
+//         ci n;
+//         for1(i,2023)if((i*(i+1))/2>=n){check=i;break;}
+//         while(1){
+//             auto it=find(aint(v1),val1),it2=find(aint(v2),val2);
+//             if(it!=v1.nd&&it2!=v2.nd){
+//                 int c=it-v1.bg;if(c<=0)break;
+//                 val1=v1[c],val2=v2[c],ans+=a[val2]-a[val1-1],c--,val1=v1[c],val2=v2[c];
+//             }
+//             else if(it!=v1.nd){
+//                 int c=it-v1.bg;
+//                 val1=v1[c],ans+=a[val2]-a[val1-1],c--,val1=v1[c],val2=val2-check+1,check--;
+//             }
+//             else if(it2!=v2.nd){
+//                 int c=it2-v2.bg;
+//                 val2=v2[c],ans+=a[val2]-a[val1-1],c--,val2=v2[c],val1=val1-check,check--;
+//             }
+//             else
+//                 ans+=a[val2]-a[val1-1],val1=val1-check,val2=val2-check+1,check--;
+//             if(val2<=1)break;
+//         }
+//         cou(ans+1);
+//     }
+// }

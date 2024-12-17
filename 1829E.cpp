@@ -75,20 +75,22 @@ const int mod = 1e9 + 7;
 // Pushkar Gupta's Solution Starts Here
 int n,m,v[1005][1005];bool v2[1005][1005];
 int f(int i,int j){
-    v2[i][j]=true;
-    int ans=v[i][j];
-    if(i&&v[i-1][j]&&!v2[i-1][j])ans+=f(i-1,j);
-    if(i<n-1&&v[i+1][j]&&!v2[i+1][j])ans+=f(i+1,j);
-    if(j&&v[i][j-1]&&!v2[i][j-1])ans+=f(i,j-1);
-    if(j<m-1&&v[i][j+1]&&!v2[i][j+1])ans+=f(i,j+1);
+    v2[i][j] = true;
+    int ans = v[i][j];
+    if(i && v[i-1][j] && !v2[i-1][j]) ans += f(i-1,j);
+    if(i<n-1 && v[i+1][j] && !v2[i+1][j]) ans += f(i+1,j);
+    if(j && v[i][j-1] && !v2[i][j-1]) ans += f(i,j-1);
+    if(j<m-1 && v[i][j+1] && !v2[i][j+1]) ans += f(i,j+1);
     return ans;
 }
 
-void push(){
-        ci n>>m;int ans(0);
-        for0(i,n)for0(j,m)ci v[i][j],v2[i][j]=false;
-        for0(i,n)for0(j,m)if(!v2[i][j]&&v[i][j])ans=max(ans,f(i,j));
-        cou(ans);
+void push()
+{
+    ci n >> m;
+    int ans(0);
+    for0(i, n) for0(j, m) ci v[i][j], v2[i][j] = false;
+    for0(i, n) for0(j, m) if(!v2[i][j] && v[i][j]) ans=max(ans,f(i,j));
+    cou(ans);
 }
 
 signed main() {
