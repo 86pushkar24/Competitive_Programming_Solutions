@@ -73,40 +73,24 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push() {
-    int n(0),s(0),d(0);
-    ci n>>d>>s;
-    if(s>n/2){
-        cou(s);
+void push()
+{
+    string a, b;ci a >> b;
+    int ind[200]{0}, ans(inf), ii(0), jj(0);
+    for (int i((int)a.length() - 1); i >= 1; i--)ind[a[i]] = i;
+    for (int i((int)b.length() - 2); i >= 0; i--)
+        if (ind[b[i]] && ((ind[b[i]]) + (int)(b.length()) - i) < ans){
+            ans = ((ind[b[i]]) + (int)(b.length()) - i);
+            ii = ind[b[i]], jj = i;
+        }
+    if (ans == inf){
+        cou(-1);
         return;
     }
-    if(n>=2*d){
-        int a(d/s),s1(a*s),s2((a+1)*s);
-        if(2*s1<=n)s1*=2;
-        if(s2>n)s2=0;
-        cou(max(s1,s2));
-    }
-    else{
-        if(n-s<=d)cou((n/s)*s)
-        else{
-            int ans(s);
-            for(int i(2);i<=(int)1e6;i++){
-                int a1(s*i);
-                if(a1>0 && a1<=d+s){
-                    int a2(min(d/a1+1,n/a1));
-                    ans=max(ans,a1*a2);
-                }
-                int b1((n/(s*i))*s);
-                if(b1>0&&b1<=d+s){
-                    int b2(min(d/b1+1,n/b1));
-                    ans=max(ans,b2*b1);
-                }
-            }
-            cou(ans);
-        }
-    }
+    for (int i(0); i < ii; i++)cout << a[i];
+    for (int i(jj); i < b.length(); i++)cout << b[i];
+    cout << endl;
 }
-
 
 signed main() {
     cin.tie(0);
