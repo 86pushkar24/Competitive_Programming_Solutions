@@ -61,7 +61,7 @@ using vvi = vector<vector<int>>;
 using vvp = vector<vector<pair<int, int>>>;
 
 // Constants
-const int maxn = 4e5 + 5;
+const int maxn = 5005;
 const int inf = 1e18;
 const int mod = 1e9 + 7;
 
@@ -75,44 +75,34 @@ const int mod = 1e9 + 7;
 
 // Pushkar Gupta's Solution Starts Here
 void push(){
-    int N,M;ci N>>M;
-    vi A(N),S(N),F(M);
-    for0(i,N)ci A[i];
-    for0(i,N)ci S[i];
-    for0(i,M)ci F[i];
-    int maxS=mxe(S);
-    int sumA=sumv(A);
-    int maxF=mxe(F);
-    int left=maxS,right=maxS+maxF*sumA;
-    auto can=[&](int T){
-        int widx=0,workerAvailable=0;
-        for0(i,N){
-            int startTime=max(S[i],workerAvailable);
-            int finishTime=startTime+F[widx]*A[i];
-            if(finishTime<=T){
-                workerAvailable=finishTime;
-            }else{
-                widx++;
-                if(widx>=M)return false;
-                workerAvailable=0;
-                int newStart=max(S[i],workerAvailable);
-                int newFinish=newStart+F[widx]*A[i];
-                if(newFinish>T)return false;
-                workerAvailable=newFinish;
-            }
+    string s;cin>>s;
+    int n=sz(s);
+    string s2;bool ck(0);
+    for0(i,n){
+        if(s[i]=='0')ck=1;
+        if(ck)s2+=(s[i]=='0')?'1':'0';
+    }
+    int ln=sz(s2),mxx=0,lt,rt;
+    if(ln==0){
+        cout<<1<<" "<<n<<" "<<1<<" "<<1<<endl;
+        return;
+    }
+    for0(i,n){
+        int rem(n-i);
+        if(ln>rem)break;
+        int ct(0);
+        for(int j=i,c=0;j<i+ln;j++,c++){
+            if(s2[c]==s[j])++ct;
+            else break;
         }
-        return true;
-    };
-    while(left<right){
-        int mid=(left+right)/2;
-        if(can(mid)){
-            right=mid;
-        }else{
-            left=mid+1;
+        if(ct>mxx){
+            mxx=ct;
+            lt=i,rt=i+ln-1;
         }
     }
-    cou(left);
+    cout<<1<<" "<<n<<" "<<lt+1<<" "<<rt+1<<endl;
 }
+
 
 
 signed main() {

@@ -75,43 +75,9 @@ const int mod = 1e9 + 7;
 
 // Pushkar Gupta's Solution Starts Here
 void push(){
-    int N,M;ci N>>M;
-    vi A(N),S(N),F(M);
-    for0(i,N)ci A[i];
-    for0(i,N)ci S[i];
-    for0(i,M)ci F[i];
-    int maxS=mxe(S);
-    int sumA=sumv(A);
-    int maxF=mxe(F);
-    int left=maxS,right=maxS+maxF*sumA;
-    auto can=[&](int T){
-        int widx=0,workerAvailable=0;
-        for0(i,N){
-            int startTime=max(S[i],workerAvailable);
-            int finishTime=startTime+F[widx]*A[i];
-            if(finishTime<=T){
-                workerAvailable=finishTime;
-            }else{
-                widx++;
-                if(widx>=M)return false;
-                workerAvailable=0;
-                int newStart=max(S[i],workerAvailable);
-                int newFinish=newStart+F[widx]*A[i];
-                if(newFinish>T)return false;
-                workerAvailable=newFinish;
-            }
-        }
-        return true;
-    };
-    while(left<right){
-        int mid=(left+right)/2;
-        if(can(mid)){
-            right=mid;
-        }else{
-            left=mid+1;
-        }
-    }
-    cou(left);
+    int n;ci n;
+    if(n%33==0)yes
+    else no
 }
 
 

@@ -74,44 +74,40 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push(){
-    int N,M;ci N>>M;
-    vi A(N),S(N),F(M);
-    for0(i,N)ci A[i];
-    for0(i,N)ci S[i];
-    for0(i,M)ci F[i];
-    int maxS=mxe(S);
-    int sumA=sumv(A);
-    int maxF=mxe(F);
-    int left=maxS,right=maxS+maxF*sumA;
-    auto can=[&](int T){
-        int widx=0,workerAvailable=0;
-        for0(i,N){
-            int startTime=max(S[i],workerAvailable);
-            int finishTime=startTime+F[widx]*A[i];
-            if(finishTime<=T){
-                workerAvailable=finishTime;
-            }else{
-                widx++;
-                if(widx>=M)return false;
-                workerAvailable=0;
-                int newStart=max(S[i],workerAvailable);
-                int newFinish=newStart+F[widx]*A[i];
-                if(newFinish>T)return false;
-                workerAvailable=newFinish;
-            }
-        }
-        return true;
-    };
-    while(left<right){
-        int mid=(left+right)/2;
-        if(can(mid)){
-            right=mid;
-        }else{
-            left=mid+1;
-        }
+int fn(int t, vi& v){
+    int lt(0),rt(sz(v)-1),res(0);
+    while(lt<=rt){
+        int md=(lt+rt)/2;
+        if(v[md]<t){
+            lt=md+1;
+            res=md;
+        }else rt=md-1;
     }
-    cou(left);
+    return sz(v)-res;
+}
+
+void push(){
+    int n,m;ci n>>m;
+    vi v1(n),v2(m);
+    for0(i,n)ci v1[i];
+    for0(i,m)ci v2[i];
+    int k=v1[0];
+    sortv(v1);
+    vi v3(m);
+    for0(i,m){
+        if(v2[i]<=k||v2[i]>v1[n-1])v3[i]=1;
+        else v3[i]=fn(v2[i],v1);
+    }
+    sortv(v3);
+    for1(j,m){
+        int st(j-1),res(0);
+        while(st<m){
+            res+=v3[st];
+            st+=j;
+        }
+        co(res)
+    }
+    cout<<endl;
 }
 
 
