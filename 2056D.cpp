@@ -77,27 +77,27 @@ const int mod = 1e9 + 7;
 void push(){
     int n;
     ci n;
-    int a[n+1];
-    a[0]=0;
-    for1(i,n)ci a[i];
-    int ans=(int)n*(n+1)/2;
+    int a1[n+1];
+    a1[0]=0;
+    for1(i,n)ci a1[i];
+    int res=(int)n*(n+1)/2;
     for1(i,10){
         int cnt[2*n+2]={};
-        int p[n+1]={};
-        int end(0),c(0);
+        int a2[n+1]={};
+        int lt(0),c(0);
         for1(j,n){
-            p[j]=p[j-1];
-            if(a[j]==i){
-                for(int k=end;k<j;k++)cnt[n+p[k]]++;
-                end=j;
+            a2[j]=a2[j-1];
+            if(a1[j]==i){
+                for(int k=lt;k<j;k++)cnt[n+a2[k]]++;
+                lt=j;
             }
-            if(a[j]<=i)p[j]++;
-            else p[j]--;
-            c+=cnt[n+p[j]];
+            if(a1[j]<=i)a2[j]++;
+            else a2[j]--;
+            c+=cnt[n+a2[j]];
         }
-        ans-=c;
+        res-=c;
     }
-    cou(ans)
+    cou(res)
 }
 
 signed main() {
