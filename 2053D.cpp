@@ -74,48 +74,126 @@ int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-int fn(mts &ms1,mts &ms2,int n){
-    // vi v3(v1),v4(v2);
-    // sort(aint(v3));
-    // sort(aint(v4));
-    auto it1=ms1.bg,it2=ms2.bg;
-    int k(1LL);
-    for0(i,n){
-    // k=(k*min(v3[i],v4[i])%mod)%mod;
-        k=(k*min(*it1,*it2)%mod)%mod;
-        ++it1;
-        ++it2;
-    }
-    return k;
+// int fn(mts &ms1,mts &ms2,int n){
+//     // vi v3(v1),v4(v2);
+//     // sort(aint(v3));
+//     // sort(aint(v4));
+//     auto it1=ms1.bg,it2=ms2.bg;
+//     int k(1LL);
+//     for0(i,n){
+//     // k=(k*min(v3[i],v4[i])%mod)%mod;
+//         k=(k*min(*it1,*it2)%mod)%mod;
+//         ++it1;
+//         ++it2;
+//     }
+//     return k;
 
-}
+// }
+// void push(){
+//     int n,q;ci n>>q;
+//     vi v1(n),v2(n);
+//     for0(i,n)ci v1[i];
+//     for0(i,n)ci v2[i];
+//     mts ms1(aint(v1));
+//     mts ms2(aint(v2));
+//     int ans=fn(ms1,ms2,n);
+//     cout<<ans;
+//     for0(i,q){
+//         int k,it;ci k>>it;
+//         it--;
+//         if(k==1){
+//             // v1[it]+=1;
+//             ms1.erase(ms1.find(v1[it]));
+//             v1[it]++;
+//             ms1.insert(v1[it]);
+//         }
+//         else{
+//             // v2[it]+=1;
+//             ms2.erase(ms2.find(v2[it]));
+//             v2[it]++;
+//             ms2.insert(v2[it]);
+//         }
+//         ans=fn(ms1,ms2,n);
+//         cout<<" "<<ans;
+//     }
+//     cout<<endl;
+// }
 void push(){
-    int n,q;ci n>>q;
-    vi v1(n),v2(n);
-    for0(i,n)ci v1[i];
-    for0(i,n)ci v2[i];
-    mts ms1(aint(v1));
-    mts ms2(aint(v2));
-    int ans=fn(ms1,ms2,n);
-    cout<<ans;
-    for0(i,q){
-        int k,it;ci k>>it;
-        it--;
-        if(k==1){
-            // v1[it]+=1;
-            ms1.erase(ms1.find(v1[it]));
-            v1[it]++;
-            ms1.insert(v1[it]);
+    int n,q;
+    ci n>>q;
+    vpii a(n),b(n);
+    vi a1(n),b1(n);
+    for0(i,n){
+        ci a[i].fi;
+        a[i].se=i;
+    }
+    for0(i,n){
+        ci b[i].fi;
+        b[i].se=i;
+    }
+
+    sort(aint(a));
+    sort(aint(b));
+
+    int ans=1;
+    for0(i,n){
+        a1[a[i].se]=i;
+        b1[b[i].se]=i;
+        ans=ans*min(a[i].fi,b[i].fi)%mod;
+    }
+    co(ans);
+
+    while(q--){
+        int o,x;
+        ci o>>x;
+        x--;
+
+        if(o==1){
+            if(a1[x]==n-1||a[a1[x]].fi+1<=a[a1[x]+1].fi){
+                int b1_val=min(a[a1[x]].fi,b[a1[x]].fi);
+                ans=ans*qexp(b1_val,mod-2,mod)%mod;
+                a[a1[x]].fi++;
+                b1_val=min(a[a1[x]].fi,b[a1[x]].fi);
+                ans=ans*b1_val%mod;
+            }
+            else{
+                pii p={a[a1[x]].fi,n};
+                int y=ubound(a,p)-1;
+                int i1=x,i2=a[y].se;
+                swap(a[a1[x]],a[y]);
+                swap(a1[i1],a1[i2]);
+                int b1_val=min(a[a1[x]].fi,b[a1[x]].fi);
+                ans=ans*qexp(b1_val,mod-2,mod)%mod;
+                a[a1[x]].fi++;
+                b1_val=min(a[a1[x]].fi,b[a1[x]].fi);
+                ans=ans*b1_val%mod;
+            }
         }
         else{
-            // v2[it]+=1;
-            ms2.erase(ms2.find(v2[it]));
-            v2[it]++;
-            ms2.insert(v2[it]);
+            if(b1[x]==n-1||b[b1[x]].fi+1<=b[b1[x]+1].fi){
+                int a1_val=min(b[b1[x]].fi,a[b1[x]].fi);
+                ans=ans*qexp(a1_val,mod-2,mod)%mod;
+                b[b1[x]].fi++;
+                a1_val=min(b[b1[x]].fi,a[b1[x]].fi);
+                ans=ans*a1_val%mod;
+            }
+            else{
+                pii p={b[b1[x]].fi,n};
+                int y=ubound(b,p)-1;
+                int i1=x,i2=b[y].se;
+                swap(b[b1[x]],b[y]);
+                swap(b1[i1],b1[i2]);
+                int a1_val=min(b[b1[x]].fi,a[b1[x]].fi);
+                ans=ans*qexp(a1_val,mod-2,mod)%mod;
+                b[b1[x]].fi++;
+                a1_val=min(b[b1[x]].fi,a[b1[x]].fi);
+                ans=ans*a1_val%mod;
+            }
         }
-        ans=fn(ms1,ms2,n);
-        cout<<" "<<ans;
+
+        co(ans);
     }
+
     cout<<endl;
 }
 
