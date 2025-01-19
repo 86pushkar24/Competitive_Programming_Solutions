@@ -24,7 +24,7 @@ using namespace std;
 #define vi vector<int>
 #define vb vector<bool>
 #define vc vector<char>
-#define vs = vector<string>;
+#define vs vector<string>
 #define vpii vector<pair<int, int>>
 #define pii pair<int, int>
 #define di deque<int>
