@@ -39,6 +39,7 @@ using namespace std;
 #define fi first
 #define se second
 #define ins insert
+#define mp make_pair
 
 // Input/Output Macros
 #define cin(a) int n;cin>>n;vi a(n);for0(i,n){cin>>a[i];}
@@ -47,12 +48,11 @@ using namespace std;
 #define ci cin >>
 #define sz(c) c.size()
 
-// Vector Operations
+// Vector opr
 #define sortv(v) sort(aint(v))
 #define rev(v) reverse(aint(v))
 #define sumv(arr) accumulate(aint(arr), 0LL)
 #define Ceil(a, b) ((a + b - 1) / b)
-#define ai(o) vi a(n);for0(i,n)ci a[i];
 
 // Type Aliases for Nested Containers
 using vvb = vector<vector<bool>>;
@@ -62,7 +62,7 @@ using vvp = vector<vector<pair<int, int>>>;
 
 // Constants
 const int maxn = 4e5 + 5;
-const int inf = 1e9;
+const int inf = 1e18;
 const int mod = 1e9 + 7;
 
 // Utility Functions (Commented for Optional Use)
@@ -74,53 +74,145 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-vpii vp;
 void push()
 {
-    vp.clear();
-    int n;
+    int n(0);
     ci n;
-    vi arr(n);
-    int cnt = 0, idx = -1;
 
-    for0(i, n)
+    int pos(0), neg(0);
+    int maxpos(-1), minneg(0);
+    int maxind(-1), minind(-1);
+    vi v;
+    v.pb(0);
+
+    for1(i, n)
     {
-        ci arr[i];
-        if (arr[i] > 0 && cnt == 0)
+        int x(0);
+        ci x;
+        v.pb(x);
+        if (x >= 0)
         {
-            cnt = 1;
-            idx = i + 1;
+            pos++;
+            if (x > maxpos)
+            {
+                maxpos = x;
+                maxind = i;
+            }
+        }
+        else
+        {
+            neg++;
+            if (x < minneg)
+            {
+                minneg = x;
+                minind = i;
+            }
         }
     }
 
-    if (is_sorted(aint(arr)))
+    vpii ans;
+    bool chk(false);
+
+    if (pos != 0 && neg != 0 && maxpos != 0)
     {
-        cou(0);
-        return;
+        if (maxpos == abs(minneg))
+        {
+            if (pos >= neg)
+            {
+                for1(i, n)
+                {
+                    if (v[i] < 0)
+                        ans.pb(mp(i, maxind));
+                }
+            }
+            else
+            {
+                chk = true;
+                for1(i, n)
+                {
+                    if (v[i] > 0)
+                        ans.pb(mp(i, minind));
+                }
+            }
+        }
+        else
+        {
+            if (maxpos > abs(minneg))
+            {
+                if (pos - neg >= -4)
+                {
+                    for1(i, n)
+                    {
+                        if (v[i] < 0)
+                            ans.pb(mp(i, maxind));
+                    }
+                }
+                else
+                {
+                    chk = true;
+                    while (abs(minneg) < maxpos)
+                    {
+                        ans.pb(mp(minind, minind));
+                        minneg *= 2;
+                    }
+                    for1(i, n)
+                    {
+                        if (v[i] > 0)
+                            ans.pb(mp(i, minind));
+                    }
+                }
+            }
+            else
+            {
+                if (neg - pos >= -4)
+                {
+                    chk = true;
+                    for1(i, n)
+                    {
+                        if (v[i] > 0)
+                            ans.pb(mp(i, minind));
+                    }
+                }
+                else
+                {
+                    while (maxpos < abs(minneg))
+                    {
+                        ans.pb(mp(maxind, maxind));
+                        maxpos *= 2;
+                    }
+                    for1(i, n)
+                    {
+                        if (v[i] < 0)
+                            ans.pb(mp(i, maxind));
+                    }
+                }
+            }
+        }
     }
 
-    if (cnt == 0)
+    if (pos == 0 || maxpos == 0)
+        chk = true;
+
+    if (chk)
     {
-        cou(n - 1);
-        for (int i = n; i > 1; i--)
+        rfl(n - 1, 1)
         {
-            cout<<i - 1 << " " << i<<endl;
+            ans.pb(mp(i, i + 1));
         }
     }
     else
     {
-        cou(5 + 2 * (n - 1));
-        for0(i, 5)
+        for1(i, n - 1)
         {
-            cout<<idx << " " << idx<<endl;
+            ans.pb(mp(i + 1, i));
         }
-        cout<<2 << " " << idx<<endl;
-        cout<<2 << " " << idx<<endl;
-        for (int i = 3; i <= n; i++)
-        {
-            cout<<i << " " << i - 1<<endl;
-            cout<<i << " " << i - 1<<endl;
-        }
+    }
+
+    cou(sz(ans));
+    for (auto [x, y] : ans)
+    {
+        co(x);
+        cou(y);
     }
 }
 
