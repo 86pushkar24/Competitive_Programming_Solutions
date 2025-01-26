@@ -74,8 +74,38 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push(){
-    
+void push()
+{
+    string s;
+    ci s;
+    int n(sz(s));
+    vi p(n + 2, 0);
+    vi cnt(n + 2, 0);
+    for1(i, n){
+        int j(p[i - 1]);
+        while (s[i - 1] != s[j] && j)
+            j = p[j];
+        p[i] = j;
+        if (i - 1 != j && s[i - 1] == s[j])
+            p[i]++;
+        cnt[p[i]]++;
+    }
+
+    rfl(n, 1)cnt[p[i]] += cnt[i];
+    vpii v;
+    int j(p[n]);
+    while (j > 0){
+        v.pb(mp(j, cnt[j] + 1LL));
+        j = p[j];
+    }
+    rev(v);
+    cou(sz(v) + 1);
+    for (auto i : v){
+        co(i.fi);
+        cou(i.se);
+    }
+    co(n);
+    cou(1);
 }
 
 signed main() {
@@ -86,7 +116,7 @@ signed main() {
     auto begin = std::chrono::high_resolution_clock::now();
 
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
