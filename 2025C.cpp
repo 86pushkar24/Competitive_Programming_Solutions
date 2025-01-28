@@ -74,98 +74,21 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push()
-{
-    int n;
-    ci n;
-    vi v(n);
-    mii mp;
-    for0(i, n)
-    {
-        ci v[i];
-        mp[v[i]]++;
-    }
-    int c(0);
-    for (auto &[a, b] : mp)
-    {
-        b = c++;
-    }
-    for0(i, n)
-    {
-        v[i] = mp[v[i]];
-    }
-    vi a(v);
+void push(){
+    int n, k;
+    ci  n >> k;
+    vi a(n);
+    for0(i,n)ci a[i];
     sortv(a);
-    int i(0);
-    while (i < n && a[i] == v[i])
+    int ans = 0;
+    for (int i = 0, j = 0; i < n; i++)
     {
-        i++;
-    }
-    int j(n - 1);
-    while (j >= 0 && a[j] == v[j])
-    {
-        j--;
-    }
-    if (i > j)
-    {
-        cou(0);
-        return;
-    }
-    int x(i - 1), y(j + 1);
-    int ans(min<int>((n - x - 1) * (n - x - 1), (1LL * y * y)));
-    j = 0;
-    vi cnt(c, 0);
-
-    for0(i, n)
-    {
-        while (j >= i && j < n && a[j] == v[j])
-        {
+        j = max(j, i);
+        while (j + 1 < n && a[j + 1] - a[j] <= 1 && a[j + 1] - a[i] <= k - 1)
             j++;
-        }
-        if (j <= i)
-        {
-            cnt[v[i]]++;
-        }
-        while (j < n && cnt[a[j]])
-        {
-            cnt[a[j]]--;
-            j++;
-        }
-        while (j > i && j < n && a[j] == v[j])
-        {
-            j++;
-        }
-        ans = min<int>(ans, 1LL * (i + 1) * (i + 1) + (j >= y ? 0 : 1LL * (n - j) * (n - j)));
+        ans = max(ans, j - i + 1);
     }
-
-    j = n - 1;
-    for0(i, c)
-    {
-        cnt[i] = 0;
-    }
-    rfl(n - 1, 0)
-    {
-        while (j <= i && j >= 0 && a[j] == v[j])
-        {
-            j--;
-        }
-        if (j >= i)
-        {
-            cnt[v[i]]++;
-        }
-        while (j >= 0 && cnt[a[j]])
-        {
-            cnt[a[j]]--;
-            j--;
-        }
-        while (j < i && j >= 0 && a[j] == v[j])
-        {
-            j--;
-        }
-        ans = min<int>(ans, 1LL * (n - i) * (n - i) + (j <= x ? 0 : 1LL * (j + 1) * (j + 1)));
-    }
-
-    cou(ans);
+    cou(ans)
 }
 
 signed main() {
@@ -176,7 +99,7 @@ signed main() {
     auto begin = std::chrono::high_resolution_clock::now();
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";

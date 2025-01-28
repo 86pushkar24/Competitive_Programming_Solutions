@@ -74,98 +74,32 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push()
-{
-    int n;
-    ci n;
-    vi v(n);
-    mii mp;
-    for0(i, n)
+void push(){
+    int n, c;
+    cin >> n >> c;
+    int a[n + 1] = {};
+    int b[n + 1] = {};
+    for (int i = 1; i <= n; i++)
     {
-        ci v[i];
-        mp[v[i]]++;
+        cin >> a[i];
+        b[i] = i;
     }
-    int c(0);
-    for (auto &[a, b] : mp)
+    sort(b + 2, b + n + 1, [&](int x, int y)
+         {
+      if(a[x]+y*c > a[y]+x*c){
+         return 1;
+      }
+      return 0; });
+    for (int i = 2; i <= n; i++)
     {
-        b = c++;
-    }
-    for0(i, n)
-    {
-        v[i] = mp[v[i]];
-    }
-    vi a(v);
-    sortv(a);
-    int i(0);
-    while (i < n && a[i] == v[i])
-    {
-        i++;
-    }
-    int j(n - 1);
-    while (j >= 0 && a[j] == v[j])
-    {
-        j--;
-    }
-    if (i > j)
-    {
-        cou(0);
-        return;
-    }
-    int x(i - 1), y(j + 1);
-    int ans(min<int>((n - x - 1) * (n - x - 1), (1LL * y * y)));
-    j = 0;
-    vi cnt(c, 0);
-
-    for0(i, n)
-    {
-        while (j >= i && j < n && a[j] == v[j])
+        if (a[b[1]] + a[b[i]] < b[i] * c)
         {
-            j++;
+            no
+            return;
         }
-        if (j <= i)
-        {
-            cnt[v[i]]++;
-        }
-        while (j < n && cnt[a[j]])
-        {
-            cnt[a[j]]--;
-            j++;
-        }
-        while (j > i && j < n && a[j] == v[j])
-        {
-            j++;
-        }
-        ans = min<int>(ans, 1LL * (i + 1) * (i + 1) + (j >= y ? 0 : 1LL * (n - j) * (n - j)));
+        a[b[1]] += a[b[i]];
     }
-
-    j = n - 1;
-    for0(i, c)
-    {
-        cnt[i] = 0;
-    }
-    rfl(n - 1, 0)
-    {
-        while (j <= i && j >= 0 && a[j] == v[j])
-        {
-            j--;
-        }
-        if (j >= i)
-        {
-            cnt[v[i]]++;
-        }
-        while (j >= 0 && cnt[a[j]])
-        {
-            cnt[a[j]]--;
-            j--;
-        }
-        while (j < i && j >= 0 && a[j] == v[j])
-        {
-            j--;
-        }
-        ans = min<int>(ans, 1LL * (n - i) * (n - i) + (j <= x ? 0 : 1LL * (j + 1) * (j + 1)));
-    }
-
-    cou(ans);
+    yes
 }
 
 signed main() {
@@ -176,7 +110,7 @@ signed main() {
     auto begin = std::chrono::high_resolution_clock::now();
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
