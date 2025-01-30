@@ -74,34 +74,22 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push()
-{
-    int x(0), n(0);
-    ci n >> x;
+void push(){
+    int k(0),n(0);
+    ci n>>k;
     int ans(0);
-
-    for (int d = 1; d * d <= (n - x); d++)
-    {
-        if ((n - x) % d == 0)
-        {
-            if (d % 2 == 0 && (d + 2) / 2 >= x)
-                ans++;
-            if (n - x != d * d && ((n - x) / d) % 2 == 0 && ((n - x) / d + 2) / 2 >= x)
-                ans++;
+    for(int d=1;d*d<=(n-k);d++){
+        if((n-k)%d==0){
+            if(d%2==0 && (d+2)/2>=k)ans++;
+            if(n-k!=d*d && ((n-k)/d)%2==0 && ((n-k)/d+2)/2>=k)ans++;
         }
     }
-
-    for (int d = 1; x != 1 && d * d <= (n + x - 2); d++)
-    {
-        if ((n + x - 2) % d == 0)
-        {
-            if (d % 2 == 0 && (d + 2) / 2 > x)
-                ans++;
-            if ((n + x - 2) != d * d && ((n + x - 2) / d) % 2 == 0 && ((n + x - 2) / d + 2) / 2 > x)
-                ans++;
+    for(int d=1;k!=1 && d*d<=(n+k-2);d++){
+        if((n+k-2)%d==0){
+            if(d%2==0 && (d+2)/2>k)ans++;
+            if((n+k-2)!=d*d && ((n+k-2)/d)%2==0 && ((n+k-2)/d+2)/2>k)ans++;
         }
     }
-
     cou(ans);
 }
 
