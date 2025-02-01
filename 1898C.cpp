@@ -75,19 +75,32 @@ const int mod = 1e9 + 7;
 
 // Pushkar Gupta's Solution Starts Here
 void push(){
-    int n;
-    ci n;
-    if (n & 1){
-        cou("Bob");
+    int n, m, k;
+    ci n >> m >> k;
+    if (k < n + m - 2 || k % 2 != (n + m - 2) % 2){
+        no
         return;
     }
-    int cnt(0);
-    while (n % 2 == 0){
-        n /= 2;
-        cnt++;
+    vvi a1(n, vi(m - 1, 0)), a2(n - 1, vi(m, 0));
+    for0(i, n - 1)if (i % 2 == 0)a2[i][0] = 1;
+    for0(i, m - 1)if ((n + i - 1) % 2 == 0)a1[n - 1][i] = 1;
+    if (k % 4 != (n + m - 2) % 4)a1[0][0] = a1[1][0] = 1;
+    a2[n - 2][m - 1] = a1[n - 1][m - 2] ^ 1;
+    a1[n - 2][m - 2] = a1[n - 1][m - 2];
+    a2[n - 2][m - 2] = a2[n - 2][m - 1];
+    yes
+    for (auto &row : a1){
+        for (auto x : row){
+            cout << (x ? "R" : "B") << ' ';
+        }
+        cou("");
     }
-    if (n > 1 || cnt % 2 == 0)cou("Alice")
-    else cou("Bob")
+    for (auto &row : a2){
+        for (auto x : row){
+            cout << (x ? "R" : "B") << ' ';
+        }
+        cou("");
+    }
 }
 
 signed main() {
