@@ -74,28 +74,33 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push()
-{
+void push(){
     int n;
     ci n;
     vi v0(n);
-    for(auto&it:v0)ci it;
-    vi v1(32,0);
-    for(auto&it :v0){
-        int k(it);
-        rfl(31,0){
-            if((k>>i)&1){
-                if(!v1[i]){
-                    v1[i]=k;
-                    break;
-                }
-                k^=v1[i];
-            }
-        }
+    int mx(0), tot(0);
+    for0(i, n){
+        ci v0[i];
+        mx = max(mx, v0[i]);
+        tot ^= v0[i];
     }
-    int res(0);
-    rfl(31,0)res=max(res,res^v1[i]);
-    cou(res);
+    int lft(0);
+    if(mx==0) lft=1;
+    else lft=(int)floor(log2(mx)) + 1;
+    int full((1 << lft) - 1);
+    int msk(full ^ tot);
+    vi v1(n);
+    for0(i, n)v1[i] = v0[i] & msk;
+    vi v2;
+    for (auto it : v1){
+        for (auto b : v2)it = min(it, it ^ b);
+        if (it)v2.pb(it);
+    }
+    sortv(v2);
+    rev(v2);
+    int ans(tot);
+    for (auto b : v2)ans = max(ans, ans ^ b);
+    cou(ans);
 }
 
 signed main() {
