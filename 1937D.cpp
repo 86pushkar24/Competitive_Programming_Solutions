@@ -77,23 +77,24 @@ const int mod = 1e9 + 7;
 int n,ans[maxn];
 void push(){
     string s;
-	ci n>>s;
-	s=' '+s;
-	for(int i(1),j(1);i<=n;i++){
-		while(j<=n && s[j]!='<') j++;
-		if(j<=n) ans[i]=ans[i-1]+2*(j-i)+1;
-		else break;
-		j++;
-	}
-	for(int i(n),j(n);i>=1;i--){
-		while(j>=1 && s[j]!='>') j--;
-		if(j>=1) ans[i]=ans[i+1]+2*(i-j)+1;
-		else break;
-		j--;
-	}
+    ci n>>s;
+    s=' '+s;
+    for(int i(1),j(1);i<=n;i++){
+        while(j<=n&&s[j]!='<')j++;
+        if(j<=n)ans[i]=ans[i-1]+2*(j-i)+1;
+        else break;
+        j++;
+    }
+    for(int i(n),j(n);i>=1;i--){
+        while(j>=1&&s[j]!='>')j--;
+        if(j>=1)ans[i]=ans[i+1]+2*(i-j)+1;
+        else break;
+        j--;
+    }
     for1(i,n)co(ans[i])
-	cou("");
+    cou("");
 }
+
 signed main() {
     cin.tie(0);
     cout.tie(0);
