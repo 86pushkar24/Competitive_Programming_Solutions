@@ -74,7 +74,7 @@ const int mod = 1e9 + 7;
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-int n, a[maxn], ans[maxn];
+int n,ans[maxn];
 void push(){
     string s;
 	ci n>>s;
