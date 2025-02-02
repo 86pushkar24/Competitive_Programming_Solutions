@@ -92,7 +92,7 @@ void push(){
 		j--;
 	}
     for1(i,n)co(ans[i])
-	cout<<endl;
+	cou("");
 }
 signed main() {
     cin.tie(0);
