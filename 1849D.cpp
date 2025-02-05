@@ -4,7 +4,7 @@
 using namespace std;
 
 // Macros
-// #define int long long
+#define int long long
 #define endl '\n'
 #define for0(i,n)for(int i=0;i<n;++i)
 #define for1(i,n)for(int i=1;i<=n;++i)
@@ -61,7 +61,7 @@ using vvi = vector<vector<int>>;
 using vvp = vector<vector<pair<int, int>>>;
 
 // Constants
-const int maxn = 5e5 + 5;
+const int maxn = 4e5 + 5;
 const int inf = 1e18;
 const int mod = 1e9 + 7;
 
@@ -75,33 +75,47 @@ const int mod = 1e9 + 7;
 
 // Pushkar Gupta's Solution Starts Here
 void push() {
-    int n, m;
-    ci n >> m;
-    vi win(n + 1), s(n + 1), pos(n + 1);
-    vpii p(n + 1);
-    for1(i, n) win[i] = i - 1;
-    for1(i, n) {
-        int x;
-        ci x;
-        p[i] = {x, i};
+    int n;
+    ci n;
+    vi a(n + 1, 0);
+    vb vis(n + 2, false);
+    int ans(0);
+    for0(i, n) ci a[i];
+    for0(i, n) {
+        if (a[i] == 2 && !vis[i]) {
+            vis[i] = true;
+            ans++;
+            int j = i - 1;
+            while (j >= 0 && !vis[j] && a[j] > 0) vis[j--] = true;
+            if (j >= 0) vis[j] = true;
+            j = i + 1;
+            while (j < n && !vis[j] && a[j] > 0) vis[j++] = true;
+            if (j < n) vis[j] = true;
+        }
     }
-    sort(p.begin() + 1, p.begin() + n + 1);
-    for1(i, n) {
-        s[i] = s[i - 1] + p[i].fi;
-        pos[p[i].se] = i;
+    a[n] = 0;
+    for0(i, n) {
+        if (a[i] == 0 && !vis[i]) {
+            ans++;
+            vis[i] = true;
+            if (i > 0 && a[i - 1] > 0 && !vis[i - 1]) {
+                int j = i - 1;
+                while (j >= 0 && !vis[j] && a[j] > 0) vis[j--] = true;
+            } else if (a[i + 1] > 0 && !vis[i + 1]) {
+                int j = i + 1;
+                while (j < n && !vis[j] && a[j] > 0) vis[j++] = true;
+            }
+        }
     }
-    auto check = [&](int mid) {
-        if (s[n - mid + 1] <= m) return true;
-        if (s[n - mid] > m) return false;
-        if (pos[n - mid + 1] <= n - mid) return true;
-        return (mid == n ? 0 : s[n - mid - 1]) <= m - p[pos[n - mid + 1]].fi;
-    };
-    int l = 1, r = n + 1;
-    while (l < r) {
-        int mid = (l + r) / 2;
-        (check(mid) ? r = mid : l = mid + 1);
+    for0(i, n) {
+        if (!vis[i]) {
+            vis[i] = true;
+            ans++;
+            int j = i + 1;
+            while (j < n && !vis[j]) vis[j++] = true;
+        }
     }
-    cou(r);
+    cou(ans);
 }
 
 
@@ -113,7 +127,7 @@ signed main() {
     auto begin = std::chrono::high_resolution_clock::now();
 
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
