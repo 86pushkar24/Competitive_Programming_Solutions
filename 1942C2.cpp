@@ -81,7 +81,7 @@ void push() {
     for1(i, x) ci a[i];
     sort(a.begin() + 1, a.begin() + x + 1);
     a[0] = a[x] - n;
-    int ans(n - 2);
+    int ans = n - 2;
     vi Odd, Even;
     for1(i, x) {
         int diff = a[i] - a[i - 1] - 1;
@@ -89,20 +89,20 @@ void push() {
     }
     sortv(Odd);
     sortv(Even);
-    for (auto d : Odd) {
-        if (d / 2 <= y) {
-            y -= d / 2;
-            break;
+    for0(i, sz(Odd)) {
+        if (Odd[i] / 2 <= y) {
+            y -= Odd[i] / 2;
+            continue;
         }
-        ans -= d - 2 * y;
+        ans -= Odd[i] - 2 * y;
         y = 0;
     }
-    for (auto d : Even) {
-        if (d / 2 <= y) {
-            y -= d / 2;
-            break;
+    for0(i, sz(Even)) {
+        if (Even[i] / 2 <= y) {
+            y -= Even[i] / 2;
+            continue;
         }
-        ans -= d - 2 * y;
+        ans -= Even[i] - 2 * y;
         y = 0;
     }
     cou(ans);
