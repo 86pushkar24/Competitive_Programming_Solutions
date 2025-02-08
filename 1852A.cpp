@@ -86,70 +86,37 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 
 // Pushkar Gupta's Solution Starts Here
 void push(){
-    int n,q;
-    ci n>>q;
+    int n,k;
+    ci n>>k;
     vi a(n);
-    int tot=0;
-    for0(i,n){
-        ci a[i];
-        tot+=a[i];
+    for(int &x:a)cin>>x;
+    if(a[0]!=1){
+        cou(1)
+        return;
     }
-    set<array<int,2>> st;
-    for(int i=0,j=0;i<n;){
-        while(j<n&&a[i]==a[j]) j++;
-        if(a[i]==2) st.ins({i,j-1});
-        i=j;
-    }
-    for0(i,q){
-        int op;
-        ci op;
-        if(op==1){
-            int s;
-            ci s;
-            if(s>tot) no
-            else if(s%2==tot%2) yes
-            else if(st.empty()) yes
+    auto get=[&](int x)->int
+    {
+        int y=0;
+        while(x>1){
+            auto it=upper_bound(aint(a),x);
+            int z=*prev(it);
+            int i=it-a.begin();
+            if(z==x)
+                y++,x-=i;
             else{
-                int left=((*st.bg)[1]-(*st.bg)[0]+1)*2;
-                if((*st.bg)[0]) left=0;
-                int right=((*st.rbegin())[1]-(*st.rbegin())[0]+1)*2;
-                if((*st.rbegin())[1]!=n-1) right=0;
-                if(s<=tot-min(left,right)) yes
-                else no
-            }
-        }else{
-            int ind,v;
-            ci ind>>v;
-            ind--; tot-=a[ind]; tot+=v;
-
-            if(a[ind]==2){
-                array<int,2> temp={ind,inf};
-                auto it=prev(st.lower_bound(temp));
-                array<int,2> lr=*it;
-                st.erase(it);
-                if(lr[0]<ind) st.ins({lr[0],ind-1});
-                if(lr[1]>ind) st.ins({ind+1,lr[1]});
-            }
-            a[ind]=v;
-            if(v==2){
-                array<int,2> temp={ind,inf};
-                auto it=st.lower_bound(temp);
-                if(it!=st.nd&&(*it)[0]==ind+1&&it!=st.bg&&(*prev(it))[1]+1==ind){
-                    array<int,2> lr=*it,lr2=*prev(it);
-                    st.erase(lr); st.erase(lr2);
-                    st.ins({lr2[0],lr[1]});
-                }else if(it!=st.nd&&(*it)[0]==ind+1){
-                    array<int,2> lr=*it;
-                    st.erase(it);
-                    st.ins({ind,lr[1]});
-                }else if(it!=st.bg&&(*prev(it))[1]+1==ind){
-                    array<int,2> lr=*prev(it);
-                    st.erase(prev(it));
-                    st.ins({lr[0],ind});
-                }else st.ins({ind,ind});
+                y+=(x-z+i-1)/i;
+                x-=(x-z+i-1)/i*i;
             }
         }
+        return y-(x==0);
+    };
+    int lo=1,hi=4e10,ans;
+    while(lo<=hi){
+        int mid=(lo+hi)/2;
+        if(get(mid)>=k)hi=mid-1,ans=mid;
+        else lo=mid+1;
     }
+    cou(ans);
 }
 
 signed main() {

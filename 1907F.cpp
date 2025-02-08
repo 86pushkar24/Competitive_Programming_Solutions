@@ -86,71 +86,40 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 
 // Pushkar Gupta's Solution Starts Here
 void push(){
-    int n,q;
-    ci n>>q;
+    int n;
+    ci n;
     vi a(n);
-    int tot=0;
-    for0(i,n){
-        ci a[i];
-        tot+=a[i];
-    }
-    set<array<int,2>> st;
-    for(int i=0,j=0;i<n;){
-        while(j<n&&a[i]==a[j]) j++;
-        if(a[i]==2) st.ins({i,j-1});
-        i=j;
-    }
-    for0(i,q){
-        int op;
-        ci op;
-        if(op==1){
-            int s;
-            ci s;
-            if(s>tot) no
-            else if(s%2==tot%2) yes
-            else if(st.empty()) yes
-            else{
-                int left=((*st.bg)[1]-(*st.bg)[0]+1)*2;
-                if((*st.bg)[0]) left=0;
-                int right=((*st.rbegin())[1]-(*st.rbegin())[0]+1)*2;
-                if((*st.rbegin())[1]!=n-1) right=0;
-                if(s<=tot-min(left,right)) yes
-                else no
-            }
-        }else{
-            int ind,v;
-            ci ind>>v;
-            ind--; tot-=a[ind]; tot+=v;
-
-            if(a[ind]==2){
-                array<int,2> temp={ind,inf};
-                auto it=prev(st.lower_bound(temp));
-                array<int,2> lr=*it;
-                st.erase(it);
-                if(lr[0]<ind) st.ins({lr[0],ind-1});
-                if(lr[1]>ind) st.ins({ind+1,lr[1]});
-            }
-            a[ind]=v;
-            if(v==2){
-                array<int,2> temp={ind,inf};
-                auto it=st.lower_bound(temp);
-                if(it!=st.nd&&(*it)[0]==ind+1&&it!=st.bg&&(*prev(it))[1]+1==ind){
-                    array<int,2> lr=*it,lr2=*prev(it);
-                    st.erase(lr); st.erase(lr2);
-                    st.ins({lr2[0],lr[1]});
-                }else if(it!=st.nd&&(*it)[0]==ind+1){
-                    array<int,2> lr=*it;
-                    st.erase(it);
-                    st.ins({ind,lr[1]});
-                }else if(it!=st.bg&&(*prev(it))[1]+1==ind){
-                    array<int,2> lr=*prev(it);
-                    st.erase(prev(it));
-                    st.ins({lr[0],ind});
-                }else st.ins({ind,ind});
-            }
+    for0(i,n)ci a[i];
+    vi a1(n),a2(n);
+    iota(aint(a1),0);
+    iota(aint(a2),0);
+    rfl(n-1,0){
+        if(i+1<n){
+            if(a[i+1]>=a[i])a1[i]=a1[i+1];
+            if(a[i+1]<=a[i])a2[i]=a2[i+1];
         }
     }
+    if(a1[0]==n-1){
+        cou(0);
+        return;
+    }
+    if(a2[0]==n-1){
+        cou(1);
+        return;
+    }
+    int ans=inf;
+    for1(i,n-1){
+    if(a1[0]>=i-1 && a1[i]==n-1 && a[n-1]<=a[0]){
+        ans=min(ans,min(2+i,n-1-i+1));
+    }
+    if(a2[0]>=i-1 && a2[i]==n-1 && a[n-1]>=a[0]){
+        ans=min(ans,min(i+1,n-1-(i-1)+1));
+    }
+    }
+    if(ans==inf)cou(-1)
+    else cou(ans)
 }
+
 
 signed main() {
     cin.tie(0);
