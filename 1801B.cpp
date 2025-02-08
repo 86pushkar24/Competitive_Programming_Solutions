@@ -116,32 +116,32 @@ void push(){
     int n;
     ci n;
     vpii a(n);
-    mts s1, s2;
-    for0(i, n){
-        ci a[i].fi >> a[i].se;
-        s2.ins(a[i].se);
+    mts s1,s2;
+    for0(i,n){
+        ci a[i].fi>>a[i].se;
+        s2.insert(a[i].se);
     }
     sortv(a);
-    int ans = 1e9;
-    for0(i, n){
-        auto [x, y] = a[i];
+    int ans=1e9;
+    for0(i,n){
+        auto[x,y]=a[i];
         s2.erase(s2.lower_bound(y));
-        s1.ins(y);
-        if (!s2.empty()){
-            int mx = *prev(s2.nd);
-            if (mx >= x)ans = min(ans, mx - x);
+        if(!s2.empty()){
+            int mx=*prev(s2.nd);
+            if(mx>=x)ans=min(ans,mx-x);
             else{
-                ans = min(ans, x - mx);
-                auto it = s1.lower_bound(x);
-                if (it != s1.nd)ans = min(ans, *it - x);
-                if (it != s1.bg)ans = min(ans, x - *prev(it));
+                ans=min(ans,x-mx);
+                auto it=s1.lower_bound(x);
+                if(it!=s1.nd)ans=min(ans,*it-x);
+                if(it!=s1.bg)ans=min(ans,x-*prev(it));
             }
         }
         else{
-            auto it = s1.lower_bound(x);
-            if (it != s1.nd)ans = min(ans, *it - x);
-            if (it != s1.bg)ans = min(ans, x - *prev(it));
+            auto it=s1.lower_bound(x);
+            if(it!=s1.nd)ans=min(ans,*it-x);
+            if(it!=s1.bg)ans=min(ans,x-*prev(it));
         }
+        s1.insert(y);
     }
     cou(ans)
 }
