@@ -1,4 +1,4 @@
-// Practice clean code - 2
+// Practice clean code - 2 
 #include <bits/stdc++.h>
 int main(){
     auto ask=[&](int s,const std::vector<int>&v){
