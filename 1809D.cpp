@@ -1,5 +1,6 @@
-//Practice clean code-2
+//Practice clean code-3
 #include<bits/stdc++.h>
+
 long long INF=1e18,P=1e12+1,Q=1e12;
 
 void push(){
