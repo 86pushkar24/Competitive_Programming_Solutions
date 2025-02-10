@@ -1,7 +1,9 @@
 /*                                          जय श्री राधे कृष्णा।                                                         */
 
 #include "bits/stdc++.h"
+#include "ext/pb_ds/assoc_container.hpp"
 using namespace std;
+using namespace __gnu_pbds;
 
 // Macros
 #define int long long
@@ -29,9 +31,11 @@ using namespace std;
 #define pii pair<int, int>
 #define di deque<int>
 #define que queue<int>
-#define si set<int>
-#define mii map<int, int>
+// #define si set<int>
+// #define mii map<int, int>
 #define mts multiset<int>
+#define mii fast_map<int, int> mp;
+#define si fast_set <int> st;
 
 #define pb push_back
 #define bg begin()
@@ -65,6 +69,13 @@ const int maxn = 4e5 + 5;
 const int inf = 1e18;
 const int mod = 1e9 + 7;
 
+
+// Custom Hash Function (for preventing collisions in hashing)
+struct custom_hash{
+    static uint64_t splitmix64(uint64_t x){x += 0x9e3779b97f4a7c15;x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;x = (x ^ (x >> 27)) * 0x94d049bb133111eb;return x ^ (x >> 31);}
+    size_t operator()(uint64_t x) const{static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();return splitmix64(x + FIXED_RANDOM);}};
+template <typename K, typename V> using fast_map = gp_hash_table<K, V, custom_hash>;
+template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>;
 // Utility Functions (Commented for Optional Use)
 // int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
 // int lcm(int a, int b) { return (a * b) / gcd(a, b); }
