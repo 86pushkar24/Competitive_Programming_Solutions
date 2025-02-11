@@ -67,7 +67,8 @@ using vvp = vector<vector<pair<int, int>>>;
 // Constants
 const int maxn = 4e5 + 5;
 const int inf = 1e18;
-const int mod = 998244353;
+const int mod = 1e9 + 7;
+
 
 // Custom Hash Function (for preventing collisions in hashing)
 struct custom_hash{
@@ -84,91 +85,11 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-struct Seg{
-    int def=0,n,sz=1;
-    vi v;
-    int comb(int l,int r){
-        return (l+r)%mod;
-    }
-    void build(int s,vi a){
-        n=s;
-        while(sz<n)
-            sz*=2;
-        v.resize(2*sz,def);
-        for0(i,n) v[i+sz]=a[i];
-        rfl(sz-1,1) v[i]=comb(v[2*i],v[2*i+1]);
-    }
-    int get(int l,int r){
-        int l1=def,r1=def;
-        for(l+=sz,r+=sz;l<r;l>>=1,r>>=1)
-        {
-            if(l&1)l1=comb(l1,v[l++]);
-            if(r&1)r1=comb(v[--r],r1);
-        }
-        return comb(l1,r1);
-    }
-    void set(int i,int a){
-        i+=sz;
-        v[i]=a;
-        while(i>1){
-            i>>=1;
-            v[i]=comb(v[2*i],v[2*i+1]);
-        }
-    }
-};
-
 void push(){
-    string s;
-    ci s;
-    int n=sz(s),q;
-    ci q;
-    vi p(n,1);
-    for1(i,n-1) p[i]=(2*p[i-1])%mod;
-    vi a1(n),a2(n),b1(n),b2(n);
-    for0(i,n){
-        if(s[i]=='1')a2[i]=p[n-i-1],b2[i]=p[i];
-        else a1[i]=p[n-i-1],b1[i]=p[i];
-    }
-    Seg aa1,aa2,bb1,bb2;
-    aa1.build(n,a1);
-    aa2.build(n,a2);
-    bb1.build(n,b1);
-    bb2.build(n,b2);
-    int ans=0;
-    for0(i,n){
-        if(s[i]=='0') ans=(ans+p[n-i-1]*(bb2.get(0,i)+1))%mod;
-        else ans=(ans+p[n-i-1]*(bb1.get(0,i)+1))%mod;
-    }
-    while(q--){
-        int i;
-        ci i;
-        i--;
-        if(s[i]=='0'){
-            ans=(ans-p[n-i-1]*(bb2.get(0,i)+1))%mod;
-            ans=(ans-(p[i]*aa2.get(i+1,n)%mod))%mod;
-            s[i]='1';
-            aa1.set(i,0);
-            bb1.set(i,0);
-            aa2.set(i,p[n-i-1]);
-            bb2.set(i,p[i]);
-            ans=(ans+p[n-i-1]*(bb1.get(0,i)+1))%mod;
-            ans=(ans+(p[i]*aa1.get(i+1,n)%mod))%mod;
-        }
-        else{
-            ans=(ans-p[n-i-1]*(bb1.get(0,i)+1))%mod;
-            ans=(ans-(p[i]*aa1.get(i+1,n)%mod))%mod;
-            s[i]='0';
-            aa2.set(i,0);
-            bb2.set(i,0);
-            aa1.set(i,p[n-i-1]);
-            bb1.set(i,p[i]);
-            ans=(ans+p[n-i-1]*(bb2.get(0,i)+1))%mod;
-            ans=(ans+(p[i]*aa2.get(i+1,n)%mod))%mod;
-        }
-        ans=(ans%mod+mod)%mod;
-        co(ans);
-    }
-    cout<<endl;
+    int a,b;
+    ci a>>b;
+    if(b==a+1)yes
+    else cy(((a-b)+1)%9==0&&a>b);
 }
 
 signed main() {
