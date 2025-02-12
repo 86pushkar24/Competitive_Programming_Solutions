@@ -30,9 +30,17 @@ int main(){
             continue;
         }
         int largest=find(s,v[n],p);
-        if(largest>v[n]){
+        if(largest>v[n]||largest==0){
             std::cout<<(largest-v[n]+p)%p<<'\n';
             continue;
+        }
+        int temp;bool ok=false;
+        for(int i=n-1;i>=0;i--){
+            if(v[i]==p-1)ok=true;
+            else{
+                temp=v[i];
+                break;
+            }
         }
         s.insert(largest);
         int second=find(s,v[n],p);
