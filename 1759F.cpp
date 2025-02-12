@@ -46,7 +46,7 @@ int main(){
         int second=find(s,v[n],p);
         if(second>v[n])second=0;
         int mini=1e18;
-        if(v[n-1]==(largest-1+p)%p)mini=std::min(mini,(second-v[n]+p)%p);
+        if(temp==(largest-1+p)%p)mini=std::min(mini,(second-v[n]+p)%p);
         mini=std::min(mini,(largest-v[n]+p)%p);
         std::cout<<mini<<'\n';
     }
