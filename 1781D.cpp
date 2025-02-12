@@ -40,6 +40,6 @@ int main(){
 				}
 			}
 		}
-		cout<<ans<<endl;
+		cout<<max(1LL,ans)<<endl;
 	}
 }
