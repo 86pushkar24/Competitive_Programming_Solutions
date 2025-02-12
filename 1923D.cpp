@@ -16,8 +16,8 @@ int main(){
             return sm[r]-sm[l-1];
         };
         std::vector<long long>mnr(n+5,1e9),mnl(n+5,-1e9);
-        for(long long i=n-3;i>=1;i--){
-            if(a[i+2]!=a[i+1])mnr[i]=i+1;
+        for(long long i=n-2;i>=1;i--){
+            if(a[i+2]!=a[i+1])mnr[i]=i+2;
             mnr[i]=std::min(mnr[i],mnr[i+1]);
         }
         for(long long i=3;i<=n;i+=1){
