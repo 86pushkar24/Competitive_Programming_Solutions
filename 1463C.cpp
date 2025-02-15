@@ -1,88 +1,35 @@
-// #pragma GCC optimize("Ofast,unroll-loops")
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-typedef long long llo;
-#define mp make_pair
-#define pb push_back
-#define a first
-#define b second
-#define endl '\n'
-
-llo t;
-
-llo ee[100001];
-llo ff[100001];
-int main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cin >> t;
-    while (t--)
-    {
-        llo n;
-        cin >> n;
-        pair<llo, llo> aa = {0, 0};
-        //	llo aa=0;//loc
-        llo bb = 1; // time
-
-        llo ans = 0;
-        llo tt = 1;
-        for (llo i = 0; i < n; i++)
-        {
-            cin >> ee[i] >> ff[i];
-        }
-        for (llo i = 0; i < n; i++)
-        {
-            llo cc, dd;
-            cc = ee[i];
-            dd = ff[i];
-            // cin>>cc>>dd;
-            if (cc >= bb)
-            {
-                bb = cc + abs(dd - aa.b);
-
-                aa.a = aa.b;
-
-                aa.b = dd;
-                tt = cc;
-                if (i < n - 1)
-                {
-                    if (abs(aa.a - dd) + tt >= ee[i] and abs(aa.a - dd) + tt <= ee[i + 1])
-                    {
-                    }
-                    else
-                    {
-                        tt = cc;
-                        continue;
-                    }
-                }
-                //	tt=cc;
-                ans++;
-                // cout<<i<<":"<<endl;
+int main(){
+    int tc;
+    cin>>tc;
+    while(tc--){
+        int n;
+        cin>>n;
+        vector<int> t(n),x(n);
+        for(int i=0; i<n;i++)cin>>t[i]>>x[i];
+        t.push_back(1e12);
+        int ans(0),cur(0),mov_left(0),dir(0);
+        for(int i=0; i<n; i++){
+            if(mov_left==0){
+                mov_left=abs(x[i]-cur);
+                dir=((x[i]>cur)?1:-1);
             }
-            else
-            {
-                //	cout<<dd<<","<<aa.a<<","<<aa.b<<","<<tt<<endl;
-                if (dd >= min(aa.a, aa.b) and dd <= max(aa.a, aa.b))
-                {
-                    if (i < n - 1)
-                    {
-                        if (abs(aa.a - dd) + tt >= ee[i] and abs(aa.a - dd) + tt <= ee[i + 1])
-                        {
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    // cout<<11<<endl;
-                    ans++;
-                }
+            int l=t[i],r=t[i+1],len=abs(t[i+1]-t[i]);
+            int lmov=cur;
+            if(len>=mov_left){
+                cur+=mov_left*dir;
+                mov_left=0;
             }
+            else{
+                cur+=len*dir;
+                mov_left-=len;
+            }
+            int rmov=cur;
+            if(lmov>rmov)swap(lmov, rmov);
+            if(lmov<=x[i]&&rmov>=x[i])ans++;
         }
-        // cout<<endl;
-        cout << ans << endl;
+        cout<<ans<<'\n';
     }
-
     return 0;
 }
