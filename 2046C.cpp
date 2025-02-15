@@ -1,24 +1,23 @@
 #include<bits/stdc++.h>
-using namespace std;
 int main(){
     int t=1;
-    cin>>t;
+    std::cin>>t;
     while(t--){
         int n;
-        cin>>n;
-        vector<pair<int,int>> v(n);
-        map<int,vector<int>> s1;
-        set<int> s2;
+        std::cin>>n;
+        std::vector<std::pair<int,int>> v(n);
+        std::map<int,std::vector<int>> s1;
+        std::set<int> s2;
         for(int i=0;i<n;i++){
-            cin>>v[i].first>>v[i].second;
+            std::cin>>v[i].first>>v[i].second;
             s2.insert(v[i].second);
         }
-        map<int,int> m;
-        vector<int> u;
+        std::map<int,int> m;
+        std::vector<int> u;
         int sz=0;
         for(auto x:s2)m[x]=sz++,u.push_back(x);
         for(int i=0;i<n;i++)s1[v[i].first].push_back(m[v[i].second]);
-        vector seg(2,vector<int>(2*sz));
+        std::vector seg(2,std::vector<int>(2*sz));
         auto up=[&](int a,int i,int b)->void {
             i+=sz;
             seg[a][i]+=b;
@@ -44,8 +43,8 @@ int main(){
                 else r=m-1;
             }
             int a1=find(l,sz,0),a2=find(l,sz,1);
-            if(min({a1,t1-a1,a2,t2-a2})>k){
-                k=min({a1,t1-a1,a2,t2-a2});
+            if(std::min({a1,t1-a1,a2,t2-a2})>k){
+                k=std::min({a1,t1-a1,a2,t2-a2});
                 x1=x,y1=u[l];
             }
             for(auto z:y){
@@ -54,7 +53,7 @@ int main(){
                 t1--,t2++;
             }
         }
-        cout<<k<<'\n'<<x1<<' '<<y1<<'\n';
+        std::cout<<k<<'\n'<<x1<<' '<<y1<<'\n';
     }
     return 0;
 }
