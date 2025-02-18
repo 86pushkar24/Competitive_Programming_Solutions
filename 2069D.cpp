@@ -85,64 +85,46 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push() {
+void push(){
     string s;
     ci s;
-    int n = sz(s);
-    int i1 = 1, i2 = n / 2;
-
-    while (i1 <= n / 2 && s[i1 - 1] == s[n - i1]) i1++;
-    while (i2 >= 1 && s[i2 - 1] == s[n - i2]) i2--;
-
-    vector<vi> f(26, vi(n + 1, 0));
-
-    for0(i, n) {
-        f[s[i] - 'a'][i + 1] = 1;
-        for0(j, 26) f[j][i + 1] += f[j][i];
+    int n=sz(s);
+    int i1=1,i2=n/2;
+    while(i1<=n/2&&s[i1-1]==s[n-i1])i1++;
+    while(i2>=1&&s[i2-1]==s[n-i2])i2--;
+    vector<vi> f(26,vi(n+1,0));
+    for0(i,n){
+        f[s[i]-'a'][i+1]=1;
+        for0(j,26)f[j][i+1]+=f[j][i];
     }
-
-    if (i1 > i2) {
+    if(i1>i2){
         cou(0);
         return;
     }
-
-    bool ok = true;
-    int ans = n;
-
-    for0(j, 26) {
-        if (f[j][i2] - f[j][i1 - 1] != f[j][n - i1 + 1] - f[j][n - i2]) {
-            ok = false;
-        }
-    }
-
-    if (ok) ans = min(ans, i2 - i1 + 1);
-
-    for (int i = n / 2 + 1; i <= n - i1 + 1; i++) {
-        bool ok = true;
-        for0(j, 26) {
-            if (f[j][i] - f[j][i1 - 1] < f[j][n - i1 + 1] - f[j][i]) {
-                ok = false;
-            }
-        }
-        if (ok) {
-            ans = min(ans, i - i1 + 1);
+    bool ok=true;
+    int ans=n;
+    for0(j,26)if(f[j][i2]-f[j][i1-1]!=f[j][n-i1+1]-f[j][n-i2])ok=false;
+    if(ok)ans=min(ans,i2-i1+1);
+    for(int i=n/2+1;i<=n-i1+1;i++){
+        bool ok=true;
+        for0(j,26)if(f[j][i]-f[j][i1-1]<f[j][n-i1+1]-f[j][i])ok=false;
+        if(ok){
+            ans=min(ans,i-i1+1);
             break;
         }
     }
-
-    for (int i = n / 2; i >= i1; i--) {
-        bool ok = true;
-        for0(j, 26) {
-            if (f[j][n - i1 + 1] - f[j][i - 1] < f[j][i - 1] - f[j][i1 - 1]) {
-                ok = false;
+    for(int i=n/2;i>=i1;i--){
+        bool ok=true;
+        for0(j,26){
+            if(f[j][n-i1+1]-f[j][i-1]<f[j][i-1]-f[j][i1-1]){
+                ok=false;
             }
         }
-        if (ok) {
-            ans = min(ans, n - i1 + 2 - i);
+        if(ok){
+            ans=min(ans,n-i1+2-i);
             break;
         }
     }
-
     cou(ans);
 }
 
