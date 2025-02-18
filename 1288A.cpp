@@ -88,13 +88,13 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 void push(){
     int n,d;
     ci n>>d;
-    if(n>=1e5){
+    if(n>=d){
         yes
         return;
     }
-    for(int x=0;x<=n;x++){
-        int temp=x+((d+x)/(x+1));
-        if(temp<=n){
+    for(int x=1;x<=n;x++){
+        int k=x+((d+x)/(x+1));
+        if(k<=n){
             yes
             return;
         }
