@@ -92,8 +92,8 @@ void push(){
         yes
         return;
     }
-    for(int x=1;x<=n;x++){
-        int k=x+((d+x)/(x+1));
+    for(int i=1;i<=n;i++){
+        int k=i+((d+i)/(i+1));
         if(k<=n){
             yes
             return;
