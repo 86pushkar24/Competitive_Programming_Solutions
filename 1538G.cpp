@@ -89,17 +89,17 @@ void push(){
     int x,y,a,b;
     ci x>>y>>a>>b;
     if(a>b)swap(a,b);
-    int l=0,r=1e15,ans=0;
+    int l(0),r=1e15,ans(0);
     while(l<=r){
-        int mid=(l+r)/2;
-        int tmp1=x-a*mid;
-        int tmp2=y-a*mid;
-        if(tmp1<0||tmp2<0)r=mid-1;
-        else if(a==b||(a!=b&&tmp1/(b-a)+tmp2/(b-a)>=mid)){
-            l=mid+1;
-            ans=mid;
+        int md=(l+r)/2;
+        int t1=x-a*md;
+        int t2=y-a*md;
+        if(t1<0||t2<0)r=md-1;
+        else if(a==b||(a!=b&&t1/(b-a)+t2/(b-a)>=md)){
+            l=md+1;
+            ans=md;
         }
-        else r=mid-1;
+        else r=md-1;
     }
     cou(ans);
 }
