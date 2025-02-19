@@ -89,7 +89,7 @@ void push(){
     int x,y,a,b;
     ci x>>y>>a>>b;
     if(a>b)swap(a,b);
-    int l(0),r=1e15,ans(0);
+    int l(0),r=1e9,ans(0);
     while(l<=r){
         int md=(l+r)/2;
         int t1=x-a*md;
