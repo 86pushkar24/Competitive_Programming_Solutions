@@ -1,117 +1,89 @@
 #include<bits/stdc++.h>
 using namespace std;
-void check(vector<int>&x, vector<int>&y, vector<int>&z)
-{
-    int n=x.size();
+void check(vector<int>&a, vector<int>&b, vector<int>&marked){
+    int n=a.size();
     vector<int> pmax(n,-1), pmin(n,-1);
     stack<int> s;
-    vector<int> lastx(n+1,-1), lasty(n+1,-1);
-    for(int i=n-1;i>=0;i--)
-    {
-        while(s.size()>0&&s.top()<=x[i])
-            s.pop();
-        if(s.size()==0)
-            s.push(x[i]);
-        else
-        {
+    vector<int> lasta(n+1,-1), lastb(n+1,-1);
+    for(int i=n-1;i>=0;i--){
+        while(s.size()>0&&s.top()<=a[i])s.pop();
+        if(s.size()==0)s.push(a[i]);
+        else{
             pmax[i]=s.top();
-            s.push(x[i]);
+            s.push(a[i]);
         }
     }
-    while(s.size())
-        s.pop();
-    for(int i=0;i<n;i++)
-        y[i]*=-1;
-    for(int i=0;i<n;i++)
-    {
-        while(s.size()>0&&s.top()<=y[i])
-            s.pop();
-        if(s.size()==0)
-            s.push(y[i]);
-        else
-        {
+    while(s.size())s.pop();
+    for(int i=0;i<n;i++)b[i]*=-1;
+    for(int i=0;i<n;i++){
+        while(s.size()>0&&s.top()<=b[i])s.pop();
+        if(s.size()==0)s.push(b[i]);
+        else{
             pmin[i]=abs(s.top());
-            s.push(y[i]);
+            s.push(b[i]);
         }
     }
-    for(int i=0;i<n;i++)
-    {
-        y[i]*=-1;
-        if(!z[i]&&lastx[y[i]]!=-1)
-        {
-            int ind=lastx[y[i]];
+    for(int i=0;i<n;i++){
+        bool ok=false;
+        b[i]*=-1;
+        if(i>0&&!marked[i]&&lasta[b[i]]!=-1){
+            int ind=lasta[b[i]];
             int mini=pmin[i];
             int maxi=pmax[ind];
-            if(maxi!=-1)
-            {
-                int ind1=lastx[maxi];
+            if(maxi!=-1){
+                int ind1=lasta[maxi];
                 if(ind1>=ind)
-                    continue;
+                    ok=true;
             }
-            if(mini!=-1)
-            {
-                int ind2=lasty[mini];
-                if(ind2>=ind)
-                    continue;
+            if(mini!=-1){
+                int ind2=lastb[mini];
+                if(ind2>=ind)ok=true;
             }
-            z[i]=1;
+            if(!ok)marked[i]=1;
         }
-        lastx[x[i]]=i;
-        lasty[y[i]]=i;
+        {
+            lasta[a[i]]=i;
+            lastb[b[i]]=i;
+        }
     }
 }
 signed main(){
-    int tc;
-    cin>>tc;
-    for(int k=1;k<=tc;k++)
-    {
+    int tt;
+    cin>>tt;
+    for(int k=1;k<=tt;k++){
         string s="";
         string t="-";
         int n;
         cin>>n;
         s+=to_string(n);
         s+=t;
-        vector<int> x(n), y(n);
+        vector<int> a(n), b(n);
         bool ok=false;
-        for(int i=0;i<n;i++)
-        {
-            cin>>x[i];
-            s+=to_string(x[i]);
+        for(int i=0;i<n;i++){
+            cin>>a[i];
+            s+=to_string(a[i]);
             s+=t;
         }
-        vector<int> z(n,0);
-        for(int i=0;i<n;i++)
-        {
-            cin>>y[i];
-            if(y[i]<x[i])
-                ok=true;
-            if(y[i]==x[i])
-                z[i]=1;
-            s+=to_string(y[i]);
+        vector<int> marked(n,0);
+        for(int i=0;i<n;i++){
+            cin>>b[i];
+            if(b[i]<a[i])ok=true;
+            if(b[i]==a[i])marked[i]=1;
+            s+=to_string(b[i]);
             s+=t;
         }
-        if(k==702)
-        {
-            cout<<s;
-            cout<<'\n';
-            continue;
-        }
-        if(ok)
-        {
+        if(ok){
             cout<<"NO\n";
             continue;
         }
-        check(x,y,z);
-        reverse(x.begin(),x.end());
-        reverse(y.begin(),y.end());
-        reverse(z.begin(),z.end());
-        check(x,y,z);
-        for(int i=0;i<n;i++)
-            if(!z[i])
-                ok=true;
-        if(ok)
-            cout<<"NO\n";
-        else
-            cout<<"YES\n";
+        check(a,b,marked);
+        reverse(a.begin(),a.end());
+        reverse(b.begin(),b.end());
+        reverse(marked.begin(),marked.end());
+        check(a,b,marked);
+        reverse(marked.begin(),marked.end());
+        for(int i=0;i<n;i++)if(!marked[i])ok=true;
+        if(ok)cout<<"NO\n";
+        else cout<<"YES\n";
     }
 };
