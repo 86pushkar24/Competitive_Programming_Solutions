@@ -1,67 +1,49 @@
 #include<bits/stdc++.h>
 using namespace std;
-int main(){
-    long long t=1;
-    cin>>t;
-    while(t--){
-        long long n;
+int query(int a,int b){
+    cout<<"? "<<a<<" "<<b<<endl;
+    int x;
+    cin>>x;
+    return x;
+}
+void out(int x){
+    cout<<"! "<<x<<endl;
+}
+signed main(){
+    int tc;
+    cin>>tc;
+    while(tc--){
+        int n;
         cin>>n;
-        vector<long long> v;
-        for(int i=1;i<=(1<<n);i++)
-            v.push_back(i);
-        if(n==1){
-            cout<<"? "<<1<<' '<<2<<endl;
-            long long x;
-            cin>>x;
-            if(x==2){
-                cout<<"! "<<2<<endl;
-            }
-            else
-                cout<<"! "<<1<<endl;
-            return 0;
-        }
-        for(int i=1;i<=n;++i){
-            vector<long long> tmp;
-            if(v.size()==2){
-                cout<<"? "<<v[0]<<' '<<v[1]<<endl;
-                long long x;
-                cin>>x;
-                if(x==1)
-                    cout<<"! "<<v[0]<<endl;
-                else
-                    cout<<"! "<<v[1]<<endl;
-                return 0;
-            }
-            if(v.size()==1){
-                cout<<"! "<<v[0]<<endl;
-                return 0;
-            }
-            for(int j=0;j<v.size();++j)
-                if(j%4==0){
-                    cout<<"? "<<v[j]<<' '<<v[j+2]<<endl;
-                    long long x;
-                    cin>>x;
-                    if(x==0){
-                        cout<<"? "<<v[j+1]<<' '<<v[j+3]<<endl;
-                        long long y;
-                        cin>>y;
-                        y!=1?tmp.push_back(v[j+3]):tmp.push_back(v[j+1]);
-                    }
-                    else if(x==1){
-                        cout<<"? "<<v[j]<<' '<<v[j+3]<<endl;
-                        long long y;
-                        cin>>y;
-                        y!=1?tmp.push_back(v[j+3]):tmp.push_back(v[j]);
-                    }
-                    else{
-                        cout<<"? "<<v[j+1]<<' '<<v[j+2]<<endl;
-                        long long y;
-                        cin>>y;
-                        y!=1?tmp.push_back(v[j+2]):tmp.push_back(v[j+1]);
-                    }
+        vector<int> v;
+        for(int i=1;i<=pow(2,n);i++)v.push_back(i);
+        while(v.size()>=4){
+            vector<int> v2;
+            for(int i=0;i<v.size();i+=4){
+                int a=v[i],b=v[i+1],c=v[i+2],d=v[i+3];
+                int a1=query(a,c);
+                int ans;
+                if(a1==0){
+                    int b1=query(b,d);
+                    if(b1==1)ans=b;
+                    else ans=d;
                 }
-            v=tmp;
+                else if(a1==1){
+                    int b1=query(a,d);
+                    if(b1==1)ans=a;
+                    else ans=d;
+                }
+                else{
+                    int b1=query(b,c);
+                    if(b1==1)ans=b;
+                    else ans=c;
+                }
+                v2.push_back(ans);
+            }
+            v=v2;
         }
+        int a=v[0],b=v[1],b1=query(a,b);
+        if(b1==1)out(a);
+        else out(b);
     }
-    return 0;
 }
