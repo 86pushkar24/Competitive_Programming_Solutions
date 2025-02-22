@@ -9,7 +9,7 @@ int main(){
         vector<long long> v;
         for(int i=1;i<=(1<<n);i++)
             v.push_back(i);
-        if(n==2){
+        if(n==1){
             cout<<"? "<<1<<' '<<2<<endl;
             long long x;
             cin>>x;
