@@ -88,47 +88,56 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 void push(){
     int n;
     ci n;
-    const int k=(1<<15)-1;
-    vi v(n);
-    int up(0);
+    vi v0(n);
+    int k(0);
     for0(i,n){
-        ci v[i];
-        up|=(v[i]&~k);
+        ci v0[i];
+        k |= v0[i];
     }
-    vi low(n);
-    for0(i,n) low[i]=v[i]&k;
-    int dw(0);
-    if(n==1)dw=low[0];
-    else if(n==2){
-        int k1=low[0]|low[1];
-        int k2=((k-low[0])|(k-low[1]));
-        dw=max(k1,k2);
+    vi v1(63,0);
+    for0(i,n)for0(b,63)if(v0[i]&(1ULL<<b))v1[b]++;
+    int ans = k, res(0);
+    int ps = min(n,14LL);
+    vpii vp1, vp2;
+    for0(i,n)vp2.pb({v0[i],i});
+    sort(aint(vp2),[](auto&p1,auto&p2){return p1.fi<p2.fi;});
+    for0(i,ps)vp1.pb(vp2[i]);
+    vi v2(63,0);
+    for0(i,ps){
+        int v = vp1[i].fi;
+        for0(b,63)if(v&(1ULL<<b))v2[b]++;
     }
-    else if(n==3||n==4){
-        int mxx(0);
-        int sm=1<<n;
-        for0(f,sm){
-            if(__builtin_popcount(f)&1)continue;
-            int res(0);
-            for0(b,15){
-                bool ok=false;
-                for0(i,n){
-                    int bt=(low[i]>>b)&1;
-                    int nw=(f>>i)&1;
-                    int res=nw?(1-bt):bt;
-                    if(res==1){
-                        ok=true;
-                        break;
-                    }
-                }
-                if(ok)res|=(1<<b);
+    int lt = 1<<ps;
+    for0(mk,lt){
+        int cnt = __builtin_popcount(mk);
+        if(cnt&1||cnt>14)continue;
+        vi s(63,0);
+        for0(i,ps){
+            if(mk&(1<<i)){
+                int v = vp1[i].fi;
+                for0(b,63)if(v&(1ULL<<b))s[b]++;
             }
-            mxx=max(mxx,res);
         }
-        dw=mxx;
+        int cur(0);
+        for0(i,63){
+            int ufp = v1[i]-s[i];
+            int fp = cnt-s[i];
+            if(ufp>0||fp>0)cur|=(1ULL<<i);
+        }
+        if(cur>ans){
+            ans = cur;
+            res = mk;
+        }
     }
-    else dw=k;
-    cou((up|dw));
+    cou(ans);
+    int lt2 = __builtin_popcount(res)/2;
+    cou(lt2);
+    if(lt2){
+        vi vf;
+        for0(i,ps)if(res&(1<<i))vf.pb(vp1[i].se);
+        sortv((vf));
+        for0(i,sz(vf)/2)cout<<vf[2*i]+1<<" "<<vf[2*i+1]+1<<"\n";
+    }
 }
 
 signed main() {
@@ -139,7 +148,7 @@ signed main() {
     auto begin = std::chrono::high_resolution_clock::now();
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";

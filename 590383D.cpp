@@ -55,7 +55,7 @@ using namespace __gnu_pbds;
 // Vector Operations
 #define sortv(v) sort(aint(v))
 #define rev(v) reverse(aint(v))
-#define sumv(arr) accumulate(aint(arr), 0LL)
+#define smv(arr) accumulate(aint(arr), 0LL)
 #define Ceil(a, b) ((a + b - 1) / b)
 
 // Type Aliases for Nested Containers
@@ -85,50 +85,85 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push(){
-    int n;
-    ci n;
-    const int k=(1<<15)-1;
-    vi v(n);
-    int up(0);
-    for0(i,n){
-        ci v[i];
-        up|=(v[i]&~k);
+void push() {
+    int n,k;
+    ci n>>k;
+    int mn=n-1;
+    int mx=(n*(n-1))/2;
+    if(k<mn||k>mx){
+        no
+        return;
     }
-    vi low(n);
-    for0(i,n) low[i]=v[i]&k;
-    int dw(0);
-    if(n==1)dw=low[0];
-    else if(n==2){
-        int k1=low[0]|low[1];
-        int k2=((k-low[0])|(k-low[1]));
-        dw=max(k1,k2);
-    }
-    else if(n==3||n==4){
-        int mxx(0);
-        int sm=1<<n;
-        for0(f,sm){
-            if(__builtin_popcount(f)&1)continue;
-            int res(0);
-            for0(b,15){
-                bool ok=false;
-                for0(i,n){
-                    int bt=(low[i]>>b)&1;
-                    int nw=(f>>i)&1;
-                    int res=nw?(1-bt):bt;
-                    if(res==1){
-                        ok=true;
-                        break;
-                    }
+    yes
+    int rem=k-mn;
+    int lt=1,rt=n;
+    vi ans(n);
+    vb chk(n+1,false);
+    ans[0]=1;
+    chk[1]=true;
+    int end=1;
+    int pt=1;
+    bool chk2=true;
+    while(pt<n){
+        if(rem>0){
+            int kk=rt-lt;
+            if(rem>=kk){
+                rem-=kk;
+                if(chk2){
+                    ans[pt]=rt;
+                    chk[rt]=true;
+                    rt--;
+                } 
+                else{
+                    ans[pt]=lt;
+                    chk[lt]=true;
+                    lt++;
                 }
-                if(ok)res|=(1<<b);
+                chk2=!chk2;
+            } 
+            else{
+                if(chk2){
+                    int nw=end+rem;
+                    ans[pt]=nw;
+                    chk[nw]=true;
+                } 
+                else{
+                    int nw=end-rem;
+                    ans[pt]=nw;
+                    chk[nw]=true;
+                }
+                rem=0;
             }
-            mxx=max(mxx,res);
+            end=ans[pt];
+            pt++;
+        } 
+        else{
+            while(pt<n&&lt<=rt){
+                if(!chk[lt]){
+                    ans[pt]=lt;
+                    chk[lt]=true;
+                    lt++;
+                    end=ans[pt];
+                    pt++;
+                } 
+                else lt++;
+            }
+            break;
         }
-        dw=mxx;
     }
-    else dw=k;
-    cou((up|dw));
+    while(pt<n){
+        while(lt<=rt&&chk[lt]) lt++;
+        if(lt<=rt){
+            ans[pt]=lt;
+            chk[lt]=true;
+            lt++;
+            pt++;
+        }
+    }
+    for0(i,n){
+        if(i+1==n) cou(ans[i])
+        else co(ans[i])
+    }
 }
 
 signed main() {
@@ -139,7 +174,7 @@ signed main() {
     auto begin = std::chrono::high_resolution_clock::now();
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
