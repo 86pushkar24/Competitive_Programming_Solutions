@@ -20,7 +20,7 @@ void push() {
     vector<int> v(n);
     for (auto&it:v)cin>>it;
     vector<int> a=v;
-    sort(a.begin(),a.end());
+    reverse(a.begin(),a.end());
     cout<<(chk(v)||chk(a)?"YES":"NO")<<'\n';
 }
 int main() {
