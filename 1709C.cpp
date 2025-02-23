@@ -6,7 +6,7 @@ int main(){
     while(tc--){
         int maxn=2e5+5;
         char s[maxn];
-        cin>>s+1;
+        cin>>(s+1);
         int n=strlen(s+1);
         int cnt[2]={0};
         for(int i=1;i<=n;i++){
