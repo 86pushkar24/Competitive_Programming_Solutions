@@ -2,7 +2,7 @@
 using namespace std;
 int main(){
     int arr[10]{};
-    for(int a=0;a<=9;a++)for(int b=0;a+b<=9;b++)for(int c=0;a+b+c<=9;c++)arr[a+b+c]+=1;
+    for(int a(0);a<=9;a++)for(int b(0);a+b<=9;b++)for(int c(0);a+b+c<=9;c++)arr[a+b+c]+=1;
     int tc;
     cin>>tc;
     while(tc--){
