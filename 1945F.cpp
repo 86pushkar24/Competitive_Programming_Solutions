@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 #define int long long
-int main(){
+signed main(){
     int tc=1;
     std::cin>>tc;
     while(tc--){
