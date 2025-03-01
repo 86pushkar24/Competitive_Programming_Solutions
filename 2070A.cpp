@@ -32,9 +32,9 @@ using namespace __gnu_pbds;
 #define di deque<int>
 #define que queue<int>
 // #define si set<int>
-#define mii XPC<int, int>
+// #define mii map<int, int>
 #define mts multiset<int>
-// #define mii fast_map<int, int>
+#define mii fast_map<int, int>
 #define si fast_set <int>
 
 #define pb push_back
@@ -86,38 +86,11 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 
 // Pushkar Gupta's Solution Starts Here
 void push(){
-    int n,x;
-    ci n>>x;
-    vi v0(n);
-    for0(i,n)ci v0[i];
-    mii m1;
-    for(auto &it:v0)m1[it]++;
-    int res=0;
-    for(auto &it: m1)res=max(res,(int)it.se);
-    if(x==1){
-        cou(res);
-        return;
-    }
-    unordered_map<int,vpii> mp2;
-    for0(i,n){
-        int k=v0[i],y=k*x;
-        mp2[k].pb({i,-1});
-        mp2[y].pb({i,+1});
-    }
-    for(auto &it:mp2){
-        int q=it.fi;
-        auto &k=it.se;
-        sort(aint(k));
-        int a1(0),crr(0);
-        for(auto &x:k){
-            crr+=x.se;
-            if(crr<0)crr=0;
-            a1=max(a1,crr);
-        }
-        int ans=m1.count(q) ? m1[q]:0;
-        res=max(res,ans+a1);
-    }
-    cou(res);
+    int n;
+    cin>>n;
+    int a=n/15,b=n%15;
+    int res=a*3+min(b+1,3LL);
+    cou(res)
 }
 
 signed main() {

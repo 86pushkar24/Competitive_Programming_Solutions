@@ -32,9 +32,9 @@ using namespace __gnu_pbds;
 #define di deque<int>
 #define que queue<int>
 // #define si set<int>
-#define mii XPC<int, int>
+// #define mii map<int, int>
 #define mts multiset<int>
-// #define mii fast_map<int, int>
+#define mii fast_map<int, int>
 #define si fast_set <int>
 
 #define pb push_back
@@ -85,39 +85,34 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push(){
-    int n,x;
-    ci n>>x;
-    vi v0(n);
-    for0(i,n)ci v0[i];
-    mii m1;
-    for(auto &it:v0)m1[it]++;
-    int res=0;
-    for(auto &it: m1)res=max(res,(int)it.se);
-    if(x==1){
-        cou(res);
-        return;
-    }
-    unordered_map<int,vpii> mp2;
+pair<int,bool> chk(int pt,string &str,int n){
+    int k(0);
     for0(i,n){
-        int k=v0[i],y=k*x;
-        mp2[k].pb({i,-1});
-        mp2[y].pb({i,+1});
+        k++;
+        if(str[i]=='L')pt--;
+        else pt++;
+        if(pt==0)return {k,true};
     }
-    for(auto &it:mp2){
-        int q=it.fi;
-        auto &k=it.se;
-        sort(aint(k));
-        int a1(0),crr(0);
-        for(auto &x:k){
-            crr+=x.se;
-            if(crr<0)crr=0;
-            a1=max(a1,crr);
+    return {k,false};
+}
+void push(){
+    int n,x,y;
+    ci n>>x>>y;
+    string str;
+    ci str;
+    auto [t1,ck]=chk(x,str,n);
+    if(!ck)cou(0)
+    else{
+        auto [it,rnd]=chk(0,str,n);
+        if(!rnd){
+            if(y<t1)cou(0)
+            else cou(1)
         }
-        int ans=m1.count(q) ? m1[q]:0;
-        res=max(res,ans+a1);
+        else{
+            if(y<t1)cou(0)
+            else cou((y-t1)/it+1)
+        }
     }
-    cou(res);
 }
 
 signed main() {
