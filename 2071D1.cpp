@@ -85,21 +85,31 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-vector<int> v={1,8,49,288,1681,9800,57121,332928};
 void push(){
-    int n;
-    ci n;
-    for0(i,sz(v)){
-        if(n==v[i]){
-            cou("-1")
-            return;
-        }
+    int n,l,r;
+    ci n>>l>>r;
+    vi v(2*n+2),p(n+1);
+    int a=0;
+    for1(i,n){
+        ci v[i];
+        a^=v[i];
+        p[i]=a;
     }
-    vi a(n);
-    iota(aint(a),1);
-    for0(i,sz(v))if(v[i]<=n)swap(a[v[i]-1],a[v[i]]);
-    for(auto it:a)co(it)
-    cout<<'\n';
+    for(int i=n+1;i<=2*n+1;i+=2)v[i]=p[i/2];
+    if(n%2!=1){
+        n++;
+        v.resize(2*n+2);
+        p.resize(n+1);
+        p[n]=p[n-1]^v[n];
+        v[2*n]=v[2*n+1]=p[n];
+    }
+    auto find=[&](auto self,int l)->int {
+        if(l<=2*n+1)return v[l];
+        l=l/2;
+        if((l-n)%2==0)return p[n];
+        else return p[n]^self(self,l);
+    };
+    cou(find(find,l))
 }
 
 signed main() {
