@@ -7,7 +7,7 @@ using namespace __gnu_pbds;
 
 // Macros
 #define int long long
-#define endl '\n'
+// #define endl '\n'
 #define for0(i,n)for(int i=0;i<n;++i)
 #define for1(i,n)for(int i=1;i<=n;++i)
 #define fl(a,b)for(int i=a;i<(b);++i)
@@ -31,11 +31,11 @@ using namespace __gnu_pbds;
 #define pii pair<int, int>
 #define di deque<int>
 #define que queue<int>
-// #define si set<int>
+#define si set<int>
 // #define mii map<int, int>
 #define mts multiset<int>
 #define mii fast_map<int, int>
-#define si fast_set <int>
+// #define si fast_set <int>
 
 #define pb push_back
 #define bg begin()
@@ -86,34 +86,67 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 
 // Pushkar Gupta's Solution Starts Here
 void push(){
-    int n,l,r;
-    ci n>>l>>r;
-    vi v(2*n+2),p(n+1);
-    int a=0;
+    int n;
+    ci n;
+    vi v0(n+1,0);
+    for(int k=3;k<=n;k++){
+        cout<<"? 1 2 "<<k<<endl;
+        cout.flush();
+        ci v0[k];
+    }
+    vi v1(n-2);
+    for(int i=0;i<n-2;i++){
+        v1[i]=i+3;
+    }
+    sort(v1.begin(),v1.end(),[&](int x,int y){ 
+        return v0[x]<v0[y]; 
+    });
+    int x=v1[0],y=v1[1];
+    cout<<"? 1 "<<x<<" "<<y<<endl;
+    cout.flush();
+    int t;
+    ci t;
+    cout<<"? 2 "<<x<<" "<<y<<endl;
+    cout.flush();
+    int u;
+    ci u;
     for1(i,n){
-        ci v[i];
-        a^=v[i];
-        p[i]=a;
+        vi ans(n+1,0);
+        ans[v1[0]]=i;
+        bool chk=true;
+        for(int i=1;i<n-2;i++){
+            int lt=v1[i-1],nw=v1[i];
+            int d=v0[nw]-v0[lt];
+            ans[nw]=ans[lt]+d;
+            if(ans[nw]<1||ans[nw]>n){
+                chk=false;
+                break;
+            }
+        }
+        if(!chk)continue;
+        set<int> st;
+        for(int i=0;i<n-2;i++){
+            if(st.count(ans[v1[i]])){
+                chk=false;
+                break;
+            }
+            st.insert(ans[v1[i]]);
+        }
+        if(!chk)continue;
+        int p1=ans[y]-(u-v0[x]);
+        int p2=ans[y]-(t-v0[x]);
+        if(p1>=1&&p1<=n&&p2>=1&&p2<=n&&p1!=p2&&!st.count(p1)&&!st.count(p2)){
+            ans[1]=p1;
+            ans[2]=p2;
+            cout<<"! ";
+            for(int i=1;i<=n;i++){
+                cout<<ans[i]<<" ";
+            }
+            cout<<endl;
+            cout.flush();
+            break;
+        }
     }
-    if(n%2!=1)v[n+1]=p[n/2];
-    for(int i=n+1+(n%2!=1);i<=2*n+1;i+=2)v[i]=v[i+1]=p[i/2];
-    if(n%2!=1){
-        n++;
-        // v.resize(2*n+2);
-        // p.resize(n+1);
-        p.pb(p[n-1]^v[n]);
-        v.pb(p[n]);
-        // p[n]=p[n-1]^v[n];
-        // v[2*n]=v[2*n+1]=p[n];
-        v.pb(p[n]);
-    }
-    auto find=[&](auto self,int l)->int {
-        if(l<=2*n+1)return v[l];
-        l=l/2;
-        if((l-n)%2!=1)return p[n];
-        else return p[n]^self(self,l);
-    };
-    cou(find(find,l))
 }
 
 signed main() {
@@ -124,7 +157,7 @@ signed main() {
     auto begin = std::chrono::high_resolution_clock::now();
 
     int tc = 1;
-    cin >> tc;
+    ci tc;
 
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";

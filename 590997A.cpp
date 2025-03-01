@@ -85,36 +85,26 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push(){
-    int n,l,r;
-    ci n>>l>>r;
-    vi v(2*n+2),p(n+1);
-    int a=0;
-    for1(i,n){
-        ci v[i];
-        a^=v[i];
-        p[i]=a;
+void push() {
+    int x,y;
+    ci x>>y;
+    if(y>x){
+        cou(-1);
+        return;
     }
-    if(n%2!=1)v[n+1]=p[n/2];
-    for(int i=n+1+(n%2!=1);i<=2*n+1;i+=2)v[i]=v[i+1]=p[i/2];
-    if(n%2!=1){
-        n++;
-        // v.resize(2*n+2);
-        // p.resize(n+1);
-        p.pb(p[n-1]^v[n]);
-        v.pb(p[n]);
-        // p[n]=p[n-1]^v[n];
-        // v[2*n]=v[2*n+1]=p[n];
-        v.pb(p[n]);
+    int a=y;
+    for0(i,61){
+        int d=(1LL<<i);
+        if((a&d)==0&&a+d<=x) a|=d;
     }
-    auto find=[&](auto self,int l)->int {
-        if(l<=2*n+1)return v[l];
-        l=l/2;
-        if((l-n)%2!=1)return p[n];
-        else return p[n]^self(self,l);
-    };
-    cou(find(find,l))
+    int k=__builtin_popcountll(a);
+    int ans;
+    if(k==0) ans=1;
+    else if(k==1) ans=(y==0?1:2);
+    else ans=(y==0?(1LL<<k):((1LL<<k)-1));
+    cou(ans);
 }
+
 
 signed main() {
     cin.tie(0);
