@@ -86,9 +86,14 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 
 // Pushkar Gupta's Solution Starts Here
 void push(){
-    int k;
-    ci k;
-    cy(k%3==1)
+    int n;
+    ci n;
+    if(n==1)cou(-1)
+    else{
+        co("2 1")
+        fl(3, n+1)co(i)
+        cout<<'\n';
+    }
 }
 
 signed main() {
