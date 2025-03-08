@@ -35,9 +35,8 @@ int main(){
                 cout<<-1<<endl;
                 continue;
             }
-            if((bd*D)/__gcd(bd,D)<cd)
-                continue;
-            result+=(((cd/D)-(!(cd%D))+1)*((cd/D)-(!(cd%D))+1))%mod;
+            if((bd*D)/__gcd(bd,D)<cd)continue;
+            result=(result+(((cd/D)+(cd%D!=0))*((cd/D)+(cd%D!=0))%mod))%mod;
         }
         cout<<result<<endl;
     }
