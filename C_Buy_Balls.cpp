@@ -120,25 +120,26 @@ void push(){
     int ans(0);
     int cnt(0);
     for0(i,a){
-        if(v1[i]>0){ 
+        if(v1[i]>=0){ 
             cnt++;
             ans+=v1[i];
         }
     }
-    if(cnt==0){
-        cou(0);
-        return;
-    }
+    // if(cnt==0){
+    //     cou(0);
+    //     return;
+    // }
     int cnt2(0);
-    for0(i,cnt){
-        if(v2[i]>0){
+    int mn=min(cnt,b);
+    for0(i,mn){
+        if(v2[i]>=0){
             cnt2++;
             ans+=v2[i];
         }
     }
     int i(cnt),j(cnt2);
     while(i<a && j<b){
-        if(v1[i]+v2[j]>0){
+        if(v1[i]+v2[j]>=0){
             ans+=v1[i]+v2[j];
             i++;
             j++;
