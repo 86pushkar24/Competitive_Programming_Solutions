@@ -1,4 +1,4 @@
-#include "bits/stdc++.h"
+#include<bits/stdc++.h>
 using namespace std;
 int main(){
     int t;
@@ -7,18 +7,25 @@ int main(){
         cout<<0<<endl;
         int a;
         cin>>a;
-        cout<<1<<endl;
-        int b;
-        cin>>b;
-        cout<<"!"<<endl;
+        int cur=0;
+        for(int i=0;i<30;i+=2)cur+=(1<<i);
+        cout<<cur<<endl;
+        int b1;
+        cin>>b1;
+        b1-=2*cur;
+        int b2=a-b1;
+        cout<<"! "<<endl;
         int m;
         cin>>m;
-        if(a==0)cout<<2*m<<endl;
-        else if(a==1)cout<<m+(m|1)<<endl;
-        else{
-            if(b==(a|1)+1)cout<<(m|a)+m<<endl;
-            else cout<<(m|1)+(m|(a-1))<<endl;
+        int ans=0;
+        for(int i=0;i<30;i++){
+            if(m&(1<<i))ans+=2*(1<<i);
+            else{
+                if(i%2==0)ans+=(b2&(1<<i))+(b2&(1<<(i+1)));
+                else ans+=(b1&(1<<i))+(b1&(1<<(i+1)));
+            }
         }
+        cout<<ans<<endl;
     }
     return 0;
 }
