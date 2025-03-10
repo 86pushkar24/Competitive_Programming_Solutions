@@ -7,25 +7,25 @@ int main(){
         cout<<0<<endl;
         int a;
         cin>>a;
-        int cur=0;
-        for(int i=0;i<30;i+=2)cur+=(1<<i);
-        cout<<cur<<endl;
-        int b1;
-        cin>>b1;
-        b1-=2*cur;
-        int b2=a-b1;
+        int nw(0);
+        for(int i(0);i<30;i+=2)nw+=(1<<i);
+        cout<<nw<<endl;
+        int b;
+        cin>>b;
+        b-=2*nw;
+        int c=a-b;
         cout<<"! "<<endl;
-        int m;
-        cin>>m;
-        int ans=0;
-        for(int i=0;i<30;i++){
-            if(m&(1<<i))ans+=2*(1<<i);
+        int k;
+        cin>>k;
+        int res(0);
+        for(int i(0);i<30;i++){
+            if(k&(1<<i))res+=2*(1<<i);
             else{
-                if(i%2==0)ans+=(b2&(1<<i))+(b2&(1<<(i+1)));
-                else ans+=(b1&(1<<i))+(b1&(1<<(i+1)));
+                if(i%2==0)res+=(c&(1<<i))+(c&(1<<(i+1)));
+                else res+=(b&(1<<i))+(b&(1<<(i+1)));
             }
         }
-        cout<<ans<<endl;
+        cout<<res<<endl;
     }
     return 0;
 }
