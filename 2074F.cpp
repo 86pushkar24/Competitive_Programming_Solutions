@@ -65,7 +65,7 @@ using vvi = vector<vector<int>>;
 using vvp = vector<vector<pair<int, int>>>;
 
 // Constants
-const int maxn = 1048576;
+const int maxn = 4e5 + 5;
 const int inf = 1e18;
 const int mod = 1e9 + 7;
 
@@ -85,16 +85,24 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-int push(int a,int b,int c,int d,int p,int q,int r,int s){
-    if(b<=p || a>=q || d<=r || c>=s)return 0;
-    if(p<=a && b<=q && r<=c && d<=s)return 1;
-    int k(b-a);
-    if(k==1){
-        if(p<=a && a<q && r<=c && c<s)return 1;
-        return 0;
-    }
-    int m1(a+k/2),m2(c+k/2);
-    return push(a,m1,c,m2,p,q,r,s)+ push(m1,b,c,m2,p,q,r,s)+ push(a,m1,m2,d,p,q,r,s)+ push(m1,b,m2,d,p,q,r,s);
+void push(){
+    int l1,r1,l2,r2;
+    ci l1>>r1>>l2>>r2;
+    vi v0,v1;
+    auto fn=[&](int l,int r,vi &axes){
+        int cr=l;
+        while(cr!=r){
+            int crp=1;
+            while((cr%(2*crp))==0&&cr+2*crp<=r)crp*=2;
+            cr+=crp;
+            axes.pb(crp);
+        }
+    };
+    fn(l1,r1,v0);
+    fn(l2,r2,v1);
+    int ans=0;
+    for(auto i:v0)for(auto j:v1)ans+=(max(i,j)/min(i,j));
+    cou(ans);
 }
 
 signed main() {
@@ -106,10 +114,7 @@ signed main() {
     cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
-        // push();
-        int p,q,r,s;
-        ci p>>q>>r>>s;
-        cou(push(0,maxn,0,maxn,p,q,r,s));
+        push();
     }
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
