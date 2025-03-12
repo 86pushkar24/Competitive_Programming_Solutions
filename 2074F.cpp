@@ -89,13 +89,13 @@ void push(){
     int l1,r1,l2,r2;
     ci l1>>r1>>l2>>r2;
     vi v0,v1;
-    auto fn=[&](int l,int r,vi &axes){
+    auto fn=[&](int l,int r,vi &v){
         int cr=l;
         while(cr!=r){
             int crp=1;
             while((cr%(2*crp))==0&&cr+2*crp<=r)crp*=2;
             cr+=crp;
-            axes.pb(crp);
+            v.pb(crp);
         }
     };
     fn(l1,r1,v0);
