@@ -85,67 +85,86 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
+// void push(){
+//     int n,k;
+//     ci n>>k;
+//     vi v0(n);
+//     for0(i,n)ci v0[i];
+//     vi vid(n);
+//     for0(i,n)vid[i]=i;
+//     sort(aint(vid),[&](int i,int j){return v0[i]>v0[j];});
+//     int ans(0);
+//     for0(l,n){
+//         vi v1;
+//         for(int i:vid){
+//             if(i!=l)v1.pb(i);
+//             if(sz(v1)==k)break;
+//         }
+//         if(sz(v1)<k)continue;  
+//         int sm(0);
+//         for(int i:v1)sm+=v0[i];
+//         if(l==0)ans=max(ans,sm+v0[l]);
+//         else if(l==n-1)ans=max(ans,sm+v0[l]);
+//         else if(k>=2){
+//             bool cl=false,cr=false;
+//             for(int i:v1){
+//                 if(i<l)cl=1;
+//                 if(i>l)cr=1;
+//             }
+//             if(cl&&cr)ans=max(ans,sm+v0[l]);
+//             else if(!cl){
+//                 int lmx=*max_element(v0.bg,v0.bg+l);
+//                 int mn=1e18;
+//                 int mid=-1;
+//                 for(int i:v1){
+//                     if(v0[i]<mn){
+//                         mn=v0[i];
+//                         mid=i;
+//                     }
+//                 }
+//                 if(lmx>mn){
+//                     int nsm=sm-mn+lmx;
+//                     ans=max(ans,nsm+v0[l]);
+//                 }
+//             }
+//             else if(!cr){
+//                 int rmx=*max_element(v0.bg+l+1,v0.nd);
+//                 int mn=1e18;
+//                 int mid=-1;
+//                 for(int i:v1){
+//                     if(v0[i]<mn){
+//                         mn=v0[i];
+//                         mid=i;
+//                     }
+//                 }
+//                 if(rmx>mn){
+//                     int nsm=sm-mn+rmx;
+//                     ans=max(ans,nsm+v0[l]);
+//                 }
+//             }
+//         }
+//         else continue;
+//     }
+//     cou(ans)
+// }
 void push(){
     int n,k;
     ci n>>k;
-    vi v0(n);
-    for0(i,n)ci v0[i];
-    vi vid(n);
-    for0(i,n)vid[i]=i;
-    sort(aint(vid),[&](int i,int j){return v0[i]>v0[j];});
-    int ans(0);
-    for0(l,n){
-        vi v1;
-        for(int i:vid){
-            if(i!=l)v1.pb(i);
-            if(sz(v1)==k)break;
-        }
-        if(sz(v1)<k)continue;  
-        int sm(0);
-        for(int i:v1)sm+=v0[i];
-        if(l==0)ans=max(ans,sm+v0[l]);
-        else if(l==n-1)ans=max(ans,sm+v0[l]);
-        else if(k>=2){
-            bool cl=false,cr=false;
-            for(int i:v1){
-                if(i<l)cl=1;
-                if(i>l)cr=1;
-            }
-            if(cl&&cr)ans=max(ans,sm+v0[l]);
-            else if(!cl){
-                int lmx=*max_element(v0.bg,v0.bg+l);
-                int mn=1e18;
-                int mid=-1;
-                for(int i:v1){
-                    if(v0[i]<mn){
-                        mn=v0[i];
-                        mid=i;
-                    }
-                }
-                if(lmx>mn){
-                    int nsm=sm-mn+lmx;
-                    ans=max(ans,nsm+v0[l]);
-                }
-            }
-            else if(!cr){
-                int rmx=*max_element(v0.bg+l+1,v0.nd);
-                int mn=1e18;
-                int mid=-1;
-                for(int i:v1){
-                    if(v0[i]<mn){
-                        mn=v0[i];
-                        mid=i;
-                    }
-                }
-                if(rmx>mn){
-                    int nsm=sm-mn+rmx;
-                    ans=max(ans,nsm+v0[l]);
-                }
-            }
-        }
-        else continue;
+    int v[n];
+    for0(i,n)ci v[i];
+    if(k==1){
+        int ans=0;
+        fl(1,n-1)ans=max(ans,v[i]+max(v[0],v[n-1]));
+        ans=max(ans,v[0]+v[n-1]);
+        cou(ans)
     }
-    cou(ans)
+    else{
+        sort(v,v+n);
+        int ans=0;
+        rfl(n-1,n-1-k)
+        ans+=v[i];
+        cou(ans)
+    }
 }
 
 signed main() {
