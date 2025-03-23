@@ -99,7 +99,7 @@ void push(){
     while(j>0){
         if(t+cur<=i*j&&t+cur>(i-1)*j)a.pb(cur),t+=j,b[cur]=0,cur--,i++;
         else {
-            if(v.size()==0)break;
+            if(sz(v)==0)break;
             j=v.back();
             v.pop_back();
             while(t+cur<=(i-1)*j)cur--;
