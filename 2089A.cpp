@@ -88,22 +88,21 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 void push(){
     int n;
     ci n;
-    vi p(n+1),v={0};
-    for(int i=2; i<=n; i++){
-        if(p[i]==0)v.pb(i);
-        for(int j=i; j<=n; j+=i)p[j]++;
+    vi p(n+1);
+    int v=0;
+    for(int i=2; i<=n/2+1; i++){
+        if(p[i]==0)v=i;
+        for(int j=i; j<=n/2+1; j+=i)p[j]++;
     }
-    vi a,b(n+1,1);
-    int t=0,i=1,j=v.back(),cur=j;
-    v.pop_back();
-    while(j>0){
-        if(t+cur<=i*j&&t+cur>(i-1)*j)a.pb(cur),t+=j,b[cur]=0,cur--,i++;
-        else {
-            if(sz(v)==0)break;
-            j=v.back();
-            v.pop_back();
-            while(t+cur<=(i-1)*j)cur--;
-        }
+    vi a={v},b(n+1,1);
+    int i=1;
+    b[v]=0;
+    while(v-i>=1&&v+i<=n){
+        b[v+i]=0;
+        b[v-i]=0;
+        a.pb(v-i);
+        a.pb(v+i);
+        i++;
     }
     for1(i,n)if(b[i]==1)a.pb(i);
     for(auto x:a)co(x)
