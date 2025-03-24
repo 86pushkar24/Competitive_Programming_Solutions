@@ -92,7 +92,7 @@ void push(){
     int v=0;
     for(int i=2; i<=n/2+1; i++){
         if(p[i]==0)v=i;
-        for(int j=i; j<=n/2+1; j+=i)p[j]++;
+        for(int j=i;    j<=n/2+1; j+=i)p[j]++;
     }
     vi a={v},b(n+1,1);
     int i=1;
