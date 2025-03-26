@@ -1,25 +1,13 @@
 #include "bits/stdc++.h"
 using namespace std;
-
-using i64 = long long;
-
-#ifdef LOCAL
-#include "debug.h"
-#else
-#define debug(...) 42
-#endif
-
-int main()
-{
-    cin.tie(0)->sync_with_stdio(0);
+int main(){
     int t;
     cin >> t;
-    for (int test = 0; test < t; test++)
-    {
+    while(t--){
         int n,m,k;
         cin>>n>>m>>k;
-        int p=(k+n-1)/n;
-        int d=m-p+1;
-        cout<<((p+d-1)/d)<<"\n";
+        int a1=(k+n-1)/n;
+        int a2=m-a1+1;
+        cout<<((a1+a2-1)/a2)<<endl;
     }
 }

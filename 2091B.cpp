@@ -1,27 +1,23 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    int t, n, x, d;
-    cin >> t;
-    while (t--)
-    {
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
         int n,x;
         cin>>n>>x;
-        vector<int> v(n);
-        for(int i(0);i<n;i++)cin>>v[i];
-        sort(v.rbegin(),v.rend());
-        int ans(0),k(0);
-        for(int i(0);i<n;i++){
-            k++;
-            if (v[i]*k>=x){
-            ans++;
-            k=0;
+        int v[n];
+        for(int i=0;i<n;i++)cin>>v[i];
+        sort(v,v+n);
+        int res=0;
+        int end=1;
+        for(int i=n-1;i>=0;i--){
+            if(1ll*end*v[i]>=x){
+                res++;
+                end=1;
             }
+            else end++;
         }
-        cout<<ans<<endl;
+        cout<<res<<endl;
     }
 }

@@ -13,11 +13,11 @@ signed main(){
     while(t--){
         int n;
         cin>>n;
-        int ans=0;
+        int res=0;
         for(int p:v){
             if(p>n)break;
-            ans+=n/p;
+            res+=n/p;
         }
-        cout<<ans<<"\n";
+        cout<<res<<"\n";
     }
 }
