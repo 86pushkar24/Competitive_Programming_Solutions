@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define int long long
+
 const int maxn=1e7+10;
 signed main(){
     vector<bool> prm(maxn,true);
@@ -13,11 +13,11 @@ signed main(){
     while(t--){
         int n;
         cin>>n;
-        int res=0;
-        for(int p:v){
-            if(p>n)break;
-            res+=n/p;
+        int res(0);
+        for(int it:v){
+            if(it>n)break;
+            res+=n/it;
         }
-        cout<<res<<"\n";
+        cout<<res<<endl;
     }
 }
