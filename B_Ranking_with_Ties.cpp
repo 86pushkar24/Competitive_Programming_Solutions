@@ -6,10 +6,11 @@ int main()
     cin>>n;
     vector<int>v(n);
     for(int i=0;i<n;i++)cin>>v[i];
-    vector<int> temp;
-    temp=v;
-    sort(temp.begin(),temp.end());
-    vector<int> ans;
+    vector<int>u(n,0);
+    for (int i = 0; i < n; i++)
+    {
+        
+    }
     
     return 0;
 }

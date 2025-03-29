@@ -65,7 +65,7 @@ using vvi = vector<vector<int>>;
 using vvp = vector<vector<pair<int, int>>>;
 
 // Constants
-const int maxn = 4e5 + 5;
+const int maxn = 200005;
 const int inf = 1e18;
 const int mod = 1e9 + 7;
 
@@ -85,29 +85,23 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push(){int k;
-    ci k;
-    vi v;
-    while(k--){
-        int n,a;
-        ci n;
-        v.pb(n);
-        for1(i,n-1)ci a;
+void push() {
+    char a[maxn], b[maxn];
+    int n;
+    ci n;
+    int cnt1=0, cnt2=0;
+    for1(i,n) ci a[i];
+    for1(j,n) ci b[j];
+    for(int i=1; i<=n; i+=2) {
+        if(a[i]=='0') cnt1++;
+        if(b[i]=='0') cnt2++;
     }
-    vi u(sz(v),0);
-    int ans=0;
-    rfl(19,0){
-        for0(j,sz(v)){
-            if(u[j]+(1<<i)<=v[j]){
-            u[j]+=(1<<i);
-            ans+=(1<<i);
-            break;
-            }
-        }
+    for(int i=2; i<=n; i+=2) {
+        if(a[i]=='0') cnt2++;
+        if(b[i]=='0') cnt1++;
     }
-    cou(ans);
+    cy(cnt1>=((n+1)/2) && cnt2>=n/2);
 }
-
 
 signed main() {
     cin.tie(0);

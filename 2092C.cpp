@@ -85,29 +85,23 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-void push(){int k;
-    ci k;
-    vi v;
-    while(k--){
-        int n,a;
-        ci n;
-        v.pb(n);
-        for1(i,n-1)ci a;
+void push(){
+    int n;
+    ci n;
+    vi v(n);
+    int c1(0),c2(0);
+    for0(i,n){
+        ci v[i];
+        c1+=(v[i]&1);
+        c2+=((v[i]+1)&1);
     }
-    vi u(sz(v),0);
-    int ans=0;
-    rfl(19,0){
-        for0(j,sz(v)){
-            if(u[j]+(1<<i)<=v[j]){
-            u[j]+=(1<<i);
-            ans+=(1<<i);
-            break;
-            }
-        }
+    if(c1==0||c2==0){
+        cou(mxe(v));
+        return;
     }
+    int ans=sumv(v)-c1+1;
     cou(ans);
 }
-
 
 signed main() {
     cin.tie(0);
