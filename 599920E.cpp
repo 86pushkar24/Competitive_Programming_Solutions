@@ -61,7 +61,7 @@ using namespace __gnu_pbds;
 // Type Aliases for Nested Containers
 using vvb = vector<vector<bool>>;
 using vvc = vector<vector<char>>;
-using vvi = vector<array<int,51>>;
+using vvi = vector<vector<int>>;
 using vvp = vector<vector<pair<int, int>>>;
 
 // Constants
@@ -85,99 +85,46 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-
-// Segment Tree for Range Queries
-array<int,51> ask(int node,int lt,int rt,int x,int y,vvi &t){
-    if(x>rt || y<lt)return array<int,51>{0};
-    if(x<=lt && rt<=y)return t[node];
-    int md=(lt+rt)/2;
-    auto lrs=ask(2*node+1,lt,md,x,y,t);
-    auto rrs=ask(2*node+2,md+1,rt,x,y,t);
-    for0(i,51)lrs[i]+=rrs[i];
-    return lrs;
-}
-
-void build(int node,int lt,int rt,vi &v0,vvi &t){
-    if(lt==rt){
-        for0(i,51){
-            if(v0[lt]<=i)t[node][i]=1;
-            else t[node][i]=0;
-        }
-    }
-    else{
-        int md=(lt+rt)/2;
-        build(2*node+1,lt,md,v0,t);
-        build(2*node+2,md+1,rt,v0,t);
-        for0(i,51){
-            t[node][i]=t[2*node+1][i]+t[2*node+2][i];
-        }
-    }
-}
-
-void update(int node,int lt,int rt,int pt,int v,vvi &t){
-    if(lt==rt){
-        for0(i,51){
-            if(v<=i)t[node][i]=1;
-            else t[node][i]=0;
-        }
-    }
-    else{
-        int md=(lt+rt)/2;
-        if(pt<=md)update(2*node+1,lt,md,pt,v,t);
-        else update(2*node+2,md+1,rt,pt,v,t);
-        for0(i,51){
-            t[node][i]=t[2*node+1][i]+t[2*node+2][i];
-        }
-    }
-}
-
 void push(){
-    int n,q,k;
-    ci n>>q>>k;
-    vi v0(n);
-    for0(i,n)ci v0[i];
-    vvi vt(4*n);
-    build(0,0,n-1,v0,vt);
-    while(q--){
-        int t;
-        ci t;
-        if(t==1){
-            int l,r;
-            ci l>>r;
-            l--;
-            r--;
-            int ans(0);
-            fl(l+1,r){
-                auto lt=ask(0,0,n-1,l,i-1,vt);
-                auto rt=ask(0,0,n-1,i+1,r,vt);
-                int v=v0[i];
-                int lct(0);
-                if(v>1)lct=lt[v-1];
-                else lct=0;
-                int rct(0);
-                if(v>k)rct=rt[v-k];
-                else rct=0;
-                ans+=(int)lct*rct;
-            }
-            cou(ans)
-        }
+    int m,k,sm(0),ans(0);
+    ci m>>k;
+    vi a(m),b(m),v(m);
+    for0(i,m)ci a[i];
+    for0(i,m)ci b[i];
+    for0(i,m){
+        int k1;
+        if(a[i]==0)k1=0;
         else{
-            int a,v;
-            ci a>>v;
-            a--;
-            v0[a]=v;
-            update(0,0,n-1,a,v,vt);
+            k1=a[i]+b[i];
+            if((a[i]+1)&a[i])k1=min(k1,LLONG_MAX);
+            else k1=min(k1,(int)__builtin_ctzll(a[i]+1));
+            for1(j,30){
+                int mn=(1LL<<j)-1;
+                k1=min(k1,abs(a[i]-mn)+b[i]+j);
+            }
         }
+        int k2;
+        if(a[i]==0)k2=2+b[i];
+        else if(a[i]%2!=1)k2=b[i];
+        else k2=1+b[i];
+        v[i]=k1-k2;
+        sm+=k2;
     }
+    sortv(v);
+    for0(i,k)ans+=v[i];
+    cou(ans+sm);
 }
 
 signed main() {
     cin.tie(0);
     cout.tie(0);
     ios::sync_with_stdio(0);
+
     auto begin = std::chrono::high_resolution_clock::now();
+
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
+
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         push();
