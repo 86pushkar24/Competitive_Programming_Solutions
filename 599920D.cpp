@@ -85,35 +85,50 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-array<int, 51> query(int node, int left, int right, int x, int y,vector<array<int, 51>> &tree){
-    if (x > right || y < left)return array<int, 51>{0};
-    if (x <= left && right <= y)return tree[node];
-    int mid = (left + right) / 2;
-    auto left_res = query(2 * node + 1, left, mid, x, y, tree);
-    auto right_res = query(2 * node + 2, mid + 1, right, x, y, tree);
-    for (int v = 0; v <= 50; v++)left_res[v] += right_res[v];
-    return left_res;
+// Segment Tree for Range Queries
+array<int,51> query(int node,int lt,int rt,int x,int y,vector<array<int,51>> &t){
+    if(x>rt||y<lt)return array<int,51>{0};
+    if(x<=lt&&rt<=y)return t[node];
+    int md=(lt+rt)/2;
+    auto lrs=query(2*node+1,lt,md,x,y,t);
+    auto rrs=query(2*node+2,md+1,rt,x,y,t);
+    for0(v,51){
+        lrs[v]+=rrs[v];
+    }
+    return lrs;
 }
 
-void build(int node, int left, int right,vector<int> &arr, vector<array<int, 51>> &tree){
-    if (left == right)for (int v = 0; v <= 50; v++)tree[node][v] = (arr[left] <= v ? 1 : 0);
+void build(int node,int lt,int rt,vector<int> &arr,vector<array<int,51>> &t){
+    if(lt==rt){
+        for(int v=0;v<=50;v++){
+            if(arr[lt]<=v)t[node][v]=1;
+            else t[node][v]=0;
+        }
+    }
     else{
-        int mid = (left + right) / 2;
-        build(2 * node + 1, left, mid, arr, tree);
-        build(2 * node + 2, mid + 1, right, arr, tree);
-        for (int v = 0; v <= 50; v++)tree[node][v] = tree[2 * node + 1][v] + tree[2 * node + 2][v];
+        int md=(lt+rt)/2;
+        build(2*node+1,lt,md,arr,t);
+        build(2*node+2,md+1,rt,arr,t);
+        for0(v,51){
+            t[node][v]=t[2*node+1][v]+t[2*node+2][v];
+        }
     }
 }
 
-void update(int node, int left, int right, int pos, int v, vector<array<int, 51>> &tree){
-    if (left == right){
-        for (int w = 0; w <= 50; w++)tree[node][w] = (v <= w ? 1 : 0);
+void update(int node,int lt,int rt,int pos,int v,vector<array<int,51>> &t){
+    if(lt==rt){
+        for0(w,51){
+            if(v<=w)t[node][w]=1;
+            else t[node][w]=0;
+        }
     }
     else{
-        int mid = (left + right) / 2;
-        if (pos <= mid)update(2 * node + 1, left, mid, pos, v, tree);
-        else update(2 * node + 2, mid + 1, right, pos, v, tree);
-        for (int w = 0; w <= 50; w++)tree[node][w] = tree[2 * node + 1][w] + tree[2 * node + 2][w];
+        int md=(lt+rt)/2;
+        if(pos<=md)update(2*node+1,lt,md,pos,v,t);
+        else update(2*node+2,md+1,rt,pos,v,t);
+        for0(w,51){
+            t[node][w]=t[2*node+1][w]+t[2*node+2][w];
+        }
     }
 }
 
