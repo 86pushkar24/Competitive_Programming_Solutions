@@ -55,13 +55,13 @@ using namespace __gnu_pbds;
 // Vector Operations
 #define sortv(v) sort(aint(v))
 #define rev(v) reverse(aint(v))
-#define sumv(arr) acnewvulate(aint(arr), 0LL)
+#define sumv(arr) accumulate(aint(arr), 0LL)
 #define Ceil(a, b) ((a + b - 1) / b)
 
 // Type Aliases for Nested Containers
 using vvb = vector<vector<bool>>;
 using vvc = vector<vector<char>>;
-using vvi = vector<array<int,51>>;
+using vvi = vector<vector<int>>;
 using vvp = vector<vector<pair<int, int>>>;
 
 // Constants
@@ -85,85 +85,71 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
 
 // Pushkar Gupta's Solution Starts Here
-class FenwickTree{
-    vector<int> bit;
+class FenwickTree
+{
+private:
+    vector<int> tree;
     int n;
+
 public:
-    FenwickTree(int size) : n(size + 1), bit(size + 1, 0) {}
-    void update(int idx, int delta)
+    FenwickTree(int _n) : n(_n), tree(_n + 1, 0) {}
+    void update(int idx, int val)
     {
-        idx++; 
         while (idx <= n)
         {
-            bit[idx] += delta;
-            idx += idx & (-idx);
+            tree[idx] = max(tree[idx], val);
+            idx += idx & -idx;
         }
     }
     int query(int idx)
     {
-        idx++; 
-        int sum = 0;
+        int res = 0;
         while (idx > 0)
         {
-            sum += bit[idx];
-            idx -= idx & (-idx);
+            res = max(res, tree[idx]);
+            idx -= idx & -idx;
         }
-        return sum;
-    }
-
-    int range_query(int left, int right)
-    {
-        return query(right) - query(left - 1);
+        return res;
     }
 };
 
 void push(){
-    int n,q,k;
-    ci n>>q>>k;
-    vi v0(n);
-    for0(i,n)ci v0[i];
-    vector<FenwickTree> vt(51,FenwickTree(n));
-    for0(i,n)vt[v0[i]].update(i,1);
-    while(q--){
-        int t;
-        ci t;
-        if(t==1){
-            int l,r;
-            ci l>>r;
-            l--;
-            r--;
-            int ans(0);
-            fl(l+1,r){
-                int v=v0[i];
-                int lct(0);
-                if(v>1)for1(w,v-1)lct+=vt[w].range_query(l,i-1);
-                int rct(0);
-                if(v>k){
-                    int mx=v-k;
-                    for1(w,mx)rct+=vt[w].range_query(i+1,r);
-                }
-                ans+=lct*rct;
-            }
-            cou(ans)
-        }
-        else{
-            int a,v;
-            ci a>>v;
-            a--;
-            vt[v0[a]].update(a,-1);
-            vt[v].update(a,1);
-            v0[a]=v;
-        }
+    int n,k;
+    ci n>>k;
+    vi a(n),b(n);
+    for0(i,n)ci a[i];
+    for0(i,n)ci b[i];
+    mii mp1;
+    for0(i,n)mp1[b[i]]=i+1;
+    vi p(n);
+    for0(i,n)p[i]=mp1[a[i]];
+    FenwickTree ft(n);
+    vi len(n);
+    for0(i,n){
+        int mxx=ft.query(p[i]-1);
+        len[i]=mxx+1;
+        ft.update(p[i],len[i]);
     }
+    vi c(n+2,0);
+    rfl(n-1,0)c[i+1]=b[i]+c[i+2];
+    int ans=c[1];
+    for0(i,n){
+        int res=len[i]*k+c[p[i]+1];
+        ans=max(ans,res);
+    }
+    cou(ans)
 }
 
 signed main() {
     cin.tie(0);
     cout.tie(0);
     ios::sync_with_stdio(0);
+
     auto begin = std::chrono::high_resolution_clock::now();
+
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
+
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         push();
