@@ -144,17 +144,13 @@ signed main() {
     cin.tie(0);
     cout.tie(0);
     ios::sync_with_stdio(0);
-
     auto begin = std::chrono::high_resolution_clock::now();
-
     int tc = 1;
     cin >> tc;
-
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         push();
     }
-
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     cerr << "Time measured: " << elapsed.count() * 1e-9 << " seconds." << endl;
