@@ -121,20 +121,20 @@ void push(){
     for0(i,n)ci b[i];
     mii mp1;
     for0(i,n)mp1[b[i]]=i+1;
-    vi p(n);
-    for0(i,n)p[i]=mp1[a[i]];
+    vi d(n);
+    for0(i,n)d[i]=mp1[a[i]];
     FenwickTree ft(n);
-    vi len(n);
+    vi e(n);
     for0(i,n){
-        int mxx=ft.query(p[i]-1);
-        len[i]=mxx+1;
-        ft.update(p[i],len[i]);
+        int mxx=ft.query(d[i]-1);
+        e[i]=mxx+1;
+        ft.update(d[i],e[i]);
     }
     vi c(n+2,0);
     rfl(n-1,0)c[i+1]=b[i]+c[i+2];
     int ans=c[1];
     for0(i,n){
-        int res=len[i]*k+c[p[i]+1];
+        int res=e[i]*k+c[d[i]+1];
         ans=max(ans,res);
     }
     cou(ans)
