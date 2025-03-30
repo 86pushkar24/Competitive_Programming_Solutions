@@ -87,8 +87,8 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 // Pushkar Gupta's Solution Starts Here
 // Segment Tree for Range Queries
 array<int,51> query(int node,int lt,int rt,int x,int y,vector<array<int,51>> &t){
-    if(x>rt||y<lt)return array<int,51>{0};
-    if(x<=lt&&rt<=y)return t[node];
+    if(x>rt || y<lt)return array<int,51>{0};
+    if(x<=lt && rt<=y)return t[node];
     int md=(lt+rt)/2;
     auto lrs=query(2*node+1,lt,md,x,y,t);
     auto rrs=query(2*node+2,md+1,rt,x,y,t);
