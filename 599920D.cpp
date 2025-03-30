@@ -1,0 +1,175 @@
+/*                                          जय श्री राधे कृष्णा।                                                         */
+
+#include "bits/stdc++.h"
+#include "ext/pb_ds/assoc_container.hpp"
+using namespace std;
+using namespace __gnu_pbds;
+
+// Macros
+#define int long long
+#define endl '\n'
+#define for0(i,n)for(int i=0;i<n;++i)
+#define for1(i,n)for(int i=1;i<=n;++i)
+#define fl(a,b)for(int i=a;i<(b);++i)
+#define rfl(a,b)for(int i=a;i>=(b);--i)
+
+#define lbound(v, x) lower_bound(v.begin(),v.end(),x)-v.begin()
+#define ubound(v, x) upper_bound(v.begin(),v.end(),x)-v.begin()
+#define mne(v) *min_element(v.begin(),v.end())
+#define mxe(v) *max_element(v.begin(),v.end())
+
+#define yes cout<<"YES"<<endl;
+#define no cout << "NO" << endl;
+#define cy(x){if(x)yes else no}
+
+#define aint(v) v.begin(),v.end()
+#define vi vector<int>
+#define vb vector<bool>
+#define vc vector<char>
+#define vs vector<string>
+#define vpii vector<pair<int, int>>
+#define pii pair<int, int>
+#define di deque<int>
+#define que queue<int>
+// #define si set<int>
+// #define mii map<int, int>
+#define mts multiset<int>
+#define mii fast_map<int, int>
+#define si fast_set <int>
+
+#define pb push_back
+#define bg begin()
+#define nd end()
+#define fi first
+#define se second
+#define ins insert
+#define mp make_pair
+
+// Input/Output Macros
+#define cin(a) int n;cin>>n;vi a(n);for0(i,n){cin>>a[i];}
+#define co(a) {cout<<a<<' ';}
+#define cou(a) {cout<<a<<"\n";}
+#define ci cin >>
+#define sz(c) c.size()
+
+// Vector Operations
+#define sortv(v) sort(aint(v))
+#define rev(v) reverse(aint(v))
+#define sumv(arr) accumulate(aint(arr), 0LL)
+#define Ceil(a, b) ((a + b - 1) / b)
+
+// Type Aliases for Nested Containers
+using vvb = vector<vector<bool>>;
+using vvc = vector<vector<char>>;
+using vvi = vector<vector<int>>;
+using vvp = vector<vector<pair<int, int>>>;
+
+// Constants
+const int maxn = 4e5 + 5;
+const int inf = 1e18;
+const int mod = 1e9 + 7;
+
+
+// Custom Hash Function (for preventing collisions in hashing)
+struct custom_hash{
+    static uint64_t splitmix64(uint64_t x){x += 0x9e3779b97f4a7c15;x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;x = (x ^ (x >> 27)) * 0x94d049bb133111eb;return x ^ (x >> 31);}
+    size_t operator()(uint64_t x) const{static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();return splitmix64(x + FIXED_RANDOM);}};
+template <typename K, typename V> using fast_map = gp_hash_table<K, V, custom_hash>;
+template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>;
+// Utility Functions (Commented for Optional Use)
+// int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
+// int lcm(int a, int b) { return (a * b) / gcd(a, b); }
+// int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
+// int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
+// bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
+// static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
+
+// Pushkar Gupta's Solution Starts Here
+array<int, 51> query(int node, int left, int right, int x, int y,vector<array<int, 51>> &tree){
+    if (x > right || y < left)return array<int, 51>{0};
+    if (x <= left && right <= y)return tree[node];
+    int mid = (left + right) / 2;
+    auto left_res = query(2 * node + 1, left, mid, x, y, tree);
+    auto right_res = query(2 * node + 2, mid + 1, right, x, y, tree);
+    for (int v = 0; v <= 50; v++)left_res[v] += right_res[v];
+    return left_res;
+}
+
+void build(int node, int left, int right,vector<int> &arr, vector<array<int, 51>> &tree){
+    if (left == right)for (int v = 0; v <= 50; v++)tree[node][v] = (arr[left] <= v ? 1 : 0);
+    else{
+        int mid = (left + right) / 2;
+        build(2 * node + 1, left, mid, arr, tree);
+        build(2 * node + 2, mid + 1, right, arr, tree);
+        for (int v = 0; v <= 50; v++)tree[node][v] = tree[2 * node + 1][v] + tree[2 * node + 2][v];
+    }
+}
+
+void update(int node, int left, int right, int pos, int v, vector<array<int, 51>> &tree){
+    if (left == right){
+        for (int w = 0; w <= 50; w++)tree[node][w] = (v <= w ? 1 : 0);
+    }
+    else{
+        int mid = (left + right) / 2;
+        if (pos <= mid)update(2 * node + 1, left, mid, pos, v, tree);
+        else update(2 * node + 2, mid + 1, right, pos, v, tree);
+        for (int w = 0; w <= 50; w++)tree[node][w] = tree[2 * node + 1][w] + tree[2 * node + 2][w];
+    }
+}
+
+void push(){
+    int n,q,k;
+    ci n>>q>>k;
+    vi arr(n);
+    for0(i,n)ci arr[i];
+    vector<array<int,51>> vt(4*n);
+    build(0,0,n-1,arr,vt);
+    while(q--){
+        int t;
+        ci t;
+        if(t==1){
+            int l,r;
+            ci l>>r;
+            l--;
+            r--;
+            int ans(0);
+            fl(l+1,r){
+                auto lt=query(0,0,n-1,l,i-1,vt);
+                auto rt=query(0,0,n-1,i+1,r,vt);
+                int v=arr[i];
+                int lct(0);
+                if(v>1)lct=lt[v-1];
+                else lct=0;
+                int rct(0);
+                if(v>k)rct=rt[v-k];
+                else rct=0;
+                ans+=(int)lct*rct;
+            }
+            cou(ans)
+        }
+        else{
+            int i,v;
+            ci i>>v;
+            i--;
+            arr[i]=v;
+            update(0,0,n-1,i,v,vt);
+        }
+    }
+}
+
+signed main() {
+    cin.tie(0);
+    cout.tie(0);
+    ios::sync_with_stdio(0);
+    auto begin = std::chrono::high_resolution_clock::now();
+    int tc = 1;
+    // cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        push();
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cerr << "Time measured: " << elapsed.count() * 1e-9 << " seconds." << endl;
+}
