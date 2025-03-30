@@ -88,28 +88,28 @@ template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>
 class FenwickTree
 {
 private:
-    vector<int> tree;
+    vector<int> bit;
     int n;
 
 public:
-    FenwickTree(int _n) : n(_n), tree(_n + 1, 0) {}
-    void update(int idx, int val)
+    FenwickTree(int size) : n(size), bit(size + 1, 0) {}
+    void update(int idx, int delta)
     {
         while (idx <= n)
         {
-            tree[idx] = max(tree[idx], val);
+            bit[idx] = max(bit[idx], delta);
             idx += idx & -idx;
         }
     }
     int query(int idx)
     {
-        int res = 0;
+        int sum = 0;
         while (idx > 0)
         {
-            res = max(res, tree[idx]);
+            sum = max(sum, bit[idx]);
             idx -= idx & -idx;
         }
-        return res;
+        return sum;
     }
 };
 
