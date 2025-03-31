@@ -46,7 +46,6 @@ struct SegTree
             sum += n2.cnt[i - k];
             n3.right[i] = n1.right[i] + n2.right[i] + sum * n1.cnt[i];
         }
-        // 
         n3.ans = n1.ans + n2.ans;
 
         int sum1 = 0, sum2 = 0;
