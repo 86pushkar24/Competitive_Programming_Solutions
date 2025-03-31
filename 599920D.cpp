@@ -1,175 +1,149 @@
-/*                                          जय श्री राधे कृष्णा।                                                         */
-
 #include "bits/stdc++.h"
-#include "ext/pb_ds/assoc_container.hpp"
 using namespace std;
-using namespace __gnu_pbds;
 
-// Macros
-#define int long long
-#define endl '\n'
-#define for0(i,n)for(int i=0;i<n;++i)
-#define for1(i,n)for(int i=1;i<=n;++i)
-#define fl(a,b)for(int i=a;i<(b);++i)
-#define rfl(a,b)for(int i=a;i>=(b);--i)
+int k;
 
-#define lbound(v, x) lower_bound(v.begin(),v.end(),x)-v.begin()
-#define ubound(v, x) upper_bound(v.begin(),v.end(),x)-v.begin()
-#define mne(v) *min_element(v.begin(),v.end())
-#define mxe(v) *max_element(v.begin(),v.end())
+struct Node
+{
+    int ans = 0;
+    vector<int> cnt, left, right;
 
-#define yes cout<<"YES"<<endl;
-#define no cout << "NO" << endl;
-#define cy(x){if(x)yes else no}
-
-#define aint(v) v.begin(),v.end()
-#define vi vector<int>
-#define vb vector<bool>
-#define vc vector<char>
-#define vs vector<string>
-#define vpii vector<pair<int, int>>
-#define pii pair<int, int>
-#define di deque<int>
-#define que queue<int>
-// #define si set<int>
-// #define mii map<int, int>
-#define mts multiset<int>
-#define mii fast_map<int, int>
-#define si fast_set <int>
-
-#define pb push_back
-#define bg begin()
-#define nd end()
-#define fi first
-#define se second
-#define ins insert
-#define mp make_pair
-
-// Input/Output Macros
-#define cin(a) int n;cin>>n;vi a(n);for0(i,n){cin>>a[i];}
-#define co(a) {cout<<a<<' ';}
-#define cou(a) {cout<<a<<"\n";}
-#define ci cin >>
-#define sz(c) c.size()
-
-// Vector Operations
-#define sortv(v) sort(aint(v))
-#define rev(v) reverse(aint(v))
-#define sumv(arr) acnewvulate(aint(arr), 0LL)
-#define Ceil(a, b) ((a + b - 1) / b)
-
-// Type Aliases for Nested Containers
-using vvb = vector<vector<bool>>;
-using vvc = vector<vector<char>>;
-using vvi = vector<array<int,51>>;
-using vvp = vector<vector<pair<int, int>>>;
-
-// Constants
-const int maxn = 4e5 + 5;
-const int inf = 1e18;
-const int mod = 1e9 + 7;
-
-
-// Custom Hash Function (for preventing collisions in hashing)
-struct custom_hash{
-    static uint64_t splitmix64(uint64_t x){x += 0x9e3779b97f4a7c15;x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;x = (x ^ (x >> 27)) * 0x94d049bb133111eb;return x ^ (x >> 31);}
-    size_t operator()(uint64_t x) const{static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();return splitmix64(x + FIXED_RANDOM);}};
-template <typename K, typename V> using fast_map = gp_hash_table<K, V, custom_hash>;
-template <typename K>  using fast_set = gp_hash_table<K, null_type, custom_hash>;
-// Utility Functions (Commented for Optional Use)
-// int gcd(int a, int b) { return a ? gcd(b % a, a) : b; }
-// int lcm(int a, int b) { return (a * b) / gcd(a, b); }
-// int binpow(int x, int y, int m) { int res(1); x = x % m; while (y > 0) { if (y & 1) res = (res * x) % m; y = y >> 1; x = (x * x) % m; } return res; }
-// int qexp(int a, int b, int m) { int res(1); while (b) { if (b % 2) res = res * a % m; a = a * a % m; b /= 2; } return res; }
-// bool isPrime(int n) { if (n <= 1) return false; for (int i = 2; i * i <= n; i++) { if (n % i == 0) return false; } return true; }
-// static bool cmp(const vector<int>& a, const vector<int>& b) { return a[1] < b[1]; }
-
-// Pushkar Gupta's Solution Starts Here
-class FenwickTree{
-    vector<int> bit;
-    int n;
-public:
-    FenwickTree(int size) : n(size + 1), bit(size + 1, 0) {}
-    void update(int idx, int delta)
+    Node()
     {
-        idx++; 
-        while (idx <= n)
-        {
-            bit[idx] += delta;
-            idx += idx & (-idx);
-        }
-    }
-    int query(int idx)
-    {
-        idx++; 
-        int sum = 0;
-        while (idx > 0)
-        {
-            sum += bit[idx];
-            idx -= idx & (-idx);
-        }
-        return sum;
-    }
-
-    int range_query(int left, int right)
-    {
-        return query(right) - query(left - 1);
+        cnt.resize(51);
+        left.resize(51);
+        right.resize(51);
     }
 };
 
-void push(){
-    int n,q,k;
-    ci n>>q>>k;
-    vi v0(n);
-    for0(i,n)ci v0[i];
-    vector<FenwickTree> vt(51,FenwickTree(n));
-    for0(i,n)vt[v0[i]].update(i,1);
-    while(q--){
-        int t;
-        ci t;
+struct SegTree
+{
+    int size;
+    vector<Node> tree;
+
+    void init(int n)
+    {
+        size = n;
+        tree.resize(4 * size);
+    }
+
+    Node combine(Node n1, Node n2)
+    {
+        Node n3;
+        for (int i = 1; i <= 50; ++i)
+        {
+            n3.cnt[i] = n2.cnt[i] + n1.cnt[i];
+        }
+        int sum = 0;
+        for (int i = 1; i <= 50; ++i)
+        {
+            n3.left[i] = n2.left[i] + n1.left[i] + sum * n2.cnt[i];
+            sum += n1.cnt[i];
+        }
+        sum = 0;
+        for (int i = k; i <= 50; ++i)
+        {
+            n3.right[i] = n1.right[i] + n2.right[i] + sum * n1.cnt[i];
+            sum += n2.cnt[i - k];
+        }
+        // 
+        n3.ans = n1.ans + n2.ans;
+
+        int sum1 = 0, sum2 = 0;
+        sum = 0;
+        for (int i = k; i <= 50; ++i)
+        {
+            sum += n2.cnt[i - k];
+            sum1 += n1.left[i] * sum;
+        }
+
+        sum = 0;
+        for (int i = 1; i <= 50; i++)
+        {
+            sum2 += sum * n2.right[i];
+            sum += n1.cnt[i];
+        }
+
+        n3.ans += sum1 + sum2;
+
+        return n3;
+    }
+
+    void build(int id, int l, int r, vector<int> &a)
+    {
+        if (l == r)
+        {
+            tree[id].cnt[a[l]]++;
+            return;
+        }
+
+        int mid = (l + r) / 2;
+        build(2 * id, l, mid, a);
+        build(2 * id + 1, mid + 1, r, a);
+
+        tree[id] = combine(tree[2 * id], tree[2 * id + 1]);
+    }
+
+    Node query(int id, int l, int r, int lq, int rq)
+    {
+        if (rq < l || lq > r)
+        {
+            return Node();
+        }
+
+        if (lq <= l && rq >= r)
+        {
+            return tree[id];
+        }
+
+        int mid = (l + r) / 2;
+        return combine(query(2 * id, l, mid, lq, rq), query(2 * id + 1, mid + 1, r, lq, rq));
+    }
+
+    void update(int id, int pos, int val1, int val2, int l, int r)
+    {
+        if (l == r)
+        {
+            tree[id].cnt[val1]--;
+            tree[id].cnt[val2]++;
+            return;
+        }
+
+        int mid = (l + r) / 2;
+        if (pos <= mid)
+        {
+            update(2 * id, pos, val1, val2, l, mid);
+        }
+        else
+        {
+            update(2 * id + 1, pos, val1, val2, mid + 1, r);
+        }
+
+        tree[id] = combine(tree[2 * id], tree[2 * id + 1]);
+    }
+};
+
+int main(){
+    int n,m;
+    cin>>n>>m>>k;
+    vector<int> a(n);
+    for(int i=0;i<n;i++)cin>>a[i];
+    SegTree st;
+    st.init(n);
+    st.build(1,0,n-1,a);
+    while(m--){
+        int t,n1,n2;
+        cin>>t>>n1>>n2;
         if(t==1){
-            int l,r;
-            ci l>>r;
-            l--;
-            r--;
-            int ans(0);
-            fl(l+1,r){
-                int v=v0[i];
-                int lct(0);
-                if(v>1)for1(w,v-1)lct+=vt[w].range_query(l,i-1);
-                int rct(0);
-                if(v>k){
-                    int mx=v-k;
-                    for1(w,mx)rct+=vt[w].range_query(i+1,r);
-                }
-                ans+=lct*rct;
-            }
-            cou(ans)
+            n1--,n2--;
+            Node res=st.query(1,0,n-1,n1,n2);
+            cout<<res.ans<<endl;
         }
         else{
-            int a,v;
-            ci a>>v;
-            a--;
-            vt[v0[a]].update(a,-1);
-            vt[v].update(a,1);
-            v0[a]=v;
+            n1--;
+            st.update(1,n1,a[n1],n2,0,n-1);
+            a[n1]=n2;
         }
     }
-}
-
-signed main() {
-    cin.tie(0);
-    cout.tie(0);
-    ios::sync_with_stdio(0);
-    auto begin = std::chrono::high_resolution_clock::now();
-    int tc = 1;
-    // cin >> tc;
-    for (int t = 1; t <= tc; t++) {
-        // cout << "Case #" << t << ": ";
-        push();
-    }
-
-    auto end = std::chrono::high_resolution_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-    cerr << "Time measured: " << elapsed.count() * 1e-9 << " seconds." << endl;
+    return 0;
 }
