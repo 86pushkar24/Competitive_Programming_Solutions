@@ -1,6 +1,6 @@
 #include "bits/stdc++.h"
 using namespace std;
-
+#define int long long
 int k;
 
 struct Node
@@ -122,7 +122,7 @@ struct SegTree
     }
 };
 
-int main(){
+signed main(){
     int n,m;
     cin>>n>>m>>k;
     vector<int> a(n);
