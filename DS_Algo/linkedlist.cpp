@@ -1,61 +1,59 @@
-#include "bits/stdc++.h"
+#include <bits/stdc++.h>
 using namespace std;
 
-// struct Node
-class Node // whenever using self defined obejct, use class
+// Define a Node structure
+struct Node
 {
-public:
-    int data;
-    Node *Next;
-
-public:
-    // Constructor
-    Node(int data1, Node *next1)
-    {
-        data = data1;
-        Next = next1;
-    }
-
-public:
-    // Constructor-2
-    Node(int data1)
-    {
-        data = data1;
-        Next = NULL;
-    }
-};
-
-Node *convert2LL(vector<int> &arr)
-{
-    Node *head = arr[0];
-    for (int i = 0; i < arr.size(); i++)
-    {
-        Node *temp = new Node(arr[i]);
-    }
-}
-
-class Node
-{
-private:
     int data;
     Node *next;
 
-public:
-    Node(int data) : data(data), next(nullptr) {}
-    int getData() { return data; }
-    Node *getNext() { return next; }
-    void setNext(Node *nex  tNode) { next = nextNode; }
+    // Constructor to initialize a new node
+    Node(int val) : data(val), next(nullptr) {}
 };
+
+// Function to convert an array to a linked list
+Node *arrayToLinkedList(int arr[], int size)
+{
+    if (size == 0)
+        return nullptr;
+
+    // Create head of the linked list
+    Node *head = new Node(arr[0]);
+    Node *current = head; 
+
+    /* Iterate through the array
+    and create linked list nodes*/
+    for (int i = 1; i < size; i++)
+    {
+        current->next = new Node(arr[i]);
+        current = current->next;
+    }
+
+    return head;
+}
+
+// Function to print the linked list
+void printLinkedList(Node *head)
+{
+    Node *current = head;
+    while (current != nullptr)
+    {
+        cout << current->data << " -> ";
+        current = current->next;
+    }
+    cout << "nullptr" << endl;
+}
 
 int main()
 {
-    // Node x = Node(1, NULL);
-    Node x = Node(1);
-    cout << x.data << endl;
-    cout << x.Next << endl;
-    // Remember to do this
-    Node *y = new Node(2, &x);
-    cout << y->data << endl;
-    cout << y->Next << endl;
+    int arr[] = {1, 2, 3, 4, 5};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    // Convert array to linked list
+    Node *head = arrayToLinkedList(arr, size);
+
+    // Print the linked list
+    printLinkedList(head);
+
     return 0;
 }
