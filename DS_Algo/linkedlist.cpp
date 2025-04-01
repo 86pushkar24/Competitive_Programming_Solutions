@@ -44,6 +44,35 @@ void printLinkedList(Node *head)
     cout << "nullptr" << endl;
 }
 
+int lengthOfLinkedList(Node *head)
+{
+    int length = 0;
+    Node *current = head;
+
+    // Count the nodes
+    while (current != nullptr)
+    {
+        length++;
+        current = current->next;
+    }
+
+    return length;
+}
+bool searchElement(Node *head, int target)
+{
+    Node *current = head;
+    // Traverse the linked list
+    while (current != nullptr)
+    {
+        if (current->data == target)
+        {
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
+
 int main()
 {
     int arr[] = {1, 2, 3, 4, 5};
@@ -54,6 +83,19 @@ int main()
 
     // Print the linked list
     printLinkedList(head);
+    // Print the length of the linked list
+    cout << "Length of linked list: " << lengthOfLinkedList(head) << endl;
+
+    // Search for an element in the linked list
+    int target = 3;
+    if (searchElement(head, target))
+    {
+        cout << "Element " << target << " found in the linked list." << endl;
+    }
+    else
+    {
+        cout << "Element " << target << " not found in the linked list." << endl;
+    }
 
     return 0;
 }
