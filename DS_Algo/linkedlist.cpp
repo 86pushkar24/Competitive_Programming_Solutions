@@ -73,29 +73,11 @@ bool searchElement(Node *head, int target)
     return false;
 }
 
+// travere in linked list and print the elements
+
+
 int main()
 {
-    int arr[] = {1, 2, 3, 4, 5};
-    int size = sizeof(arr) / sizeof(arr[0]);
-
-    // Convert array to linked list
-    Node *head = arrayToLinkedList(arr, size);
-
-    // Print the linked list
-    printLinkedList(head);
-    // Print the length of the linked list
-    cout << "Length of linked list: " << lengthOfLinkedList(head) << endl;
-
-    // Search for an element in the linked list
-    int target = 3;
-    if (searchElement(head, target))
-    {
-        cout << "Element " << target << " found in the linked list." << endl;
-    }
-    else
-    {
-        cout << "Element " << target << " not found in the linked list." << endl;
-    }
-
+    
     return 0;
 }
