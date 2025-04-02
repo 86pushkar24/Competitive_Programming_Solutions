@@ -8,45 +8,38 @@ signed main(){
     while(t--){
         int n,k;
         cin>>n>>k;
-        int a[n];
+        int a[n],b[n];
         for(int i=0;i<n;i++)cin>>a[i];
-        int b[n];
         for(int i=0;i<n;i++)cin>>b[i];
-        vector<pair<int,int>>v;
-        for(int i=0;i<n;i++)v.push_back({b[i],a[i]});
-        sort(v.begin(),v.end());
-        int maxs[n];
-        int sums=0;
+        vector<pair<int,int>> c(n);
         for(int i=0;i<n;i++){
-            maxs[i]=sums;
-            if(v[i].first-v[i].second>0)sums+=(v[i].first-v[i].second);
+            c[i].first=b[i];
+            c[i].second=a[i];
         }
-        multiset<int>ss;
-        int kk=0;
-        int req[n];
+        sort(c.rbegin(),c.rend());
+        vector<int> sum(n,0);
+        vector<int> t(n,0);
+        multiset<int> s;
+        int l=0;
+        for(int i=0;i<n;i++){
+            s.insert((-c[i].second));
+            l+=(-c[i].second);
+            if(s.size()>k){
+            l-=*s.begin();
+            s.extract(s.begin());
+            }
+            t[i]=l;
+        }
         for(int i=n-1;i>=0;i--){
-            if(ss.size()<k){
-                ss.insert(v[i].second);
-                kk+=v[i].second;
-                req[i]=kk;
-                continue;
+            if(c[i].first+(-c[i].second)>0)sum[i]=c[i].first+(-c[i].second);
+            if(i!=n-1){
+            sum[i]+=sum[i+1];
+            t[i]+=sum[i+1];
             }
-            if(ss.empty()){
-                req[i]=0;
-                continue;
-            }
-            int x=*(ss.rbegin());
-            if(v[i].second<x){
-                ss.erase(ss.find(x));
-                kk-=x;
-                kk+=v[i].second;
-                ss.insert(v[i].second);
-            }
-            req[i]=kk;
         }
         int ans=0;
-        if(k==0)ans=max(ans,sums);
-        for(int i=0;i<n-k+1;i++)ans=max(ans,maxs[i]-req[i]);
+        if(k==0)ans=max(ans,sum[0]);
+        else for(int i=k-1;i<n;i++)ans=max(ans,t[i]);
         cout<<ans<<"\n";
     }
 }
