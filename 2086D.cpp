@@ -91,6 +91,7 @@ void pre(){
     inv[maxn-1]=binpow(f[maxn-1],mod-2,mod);
     rfl(maxn-2,0)inv[i]=inv[i+1]*(i+1)%mod;
 }
+
 void push(){
     vi v1,v2(26);
     for0(i,26)ci v2[i];
@@ -117,8 +118,8 @@ void push(){
             if(i&(1<<j))ednm=ednm*inv[v2[idx]]%mod;
             else odnm=odnm*inv[v2[idx]]%mod;
         }
-        int w=bn*f[eve]%mod*ednm%mod*f[odd]%mod*odnm%mod;
-        ans=(ans+w)%mod;
+        int k=bn*f[eve]%mod*ednm%mod*f[odd]%mod*odnm%mod;
+        ans=(ans+k)%mod;
     }
     cou(ans)
 }
